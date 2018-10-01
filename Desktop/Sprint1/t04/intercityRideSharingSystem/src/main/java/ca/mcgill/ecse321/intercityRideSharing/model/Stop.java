@@ -1,27 +1,26 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
 
-package ca.mcgill.ecse321.intercityRideSharingSystem;
+package ca.mcgill.ecse321.intercityRideSharing.model;
 import java.util.*;
 
-// line 12 "../../../../model.ump"
-public class Passenger extends User
+// line 23 "../../../../model.ump"
+public class Stop
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //Passenger Associations
+  //Stop Associations
   private List<Journey> journeies;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Passenger(String aName)
+  public Stop()
   {
-    super(aName);
     journeies = new ArrayList<Journey>();
   }
 
@@ -69,13 +68,13 @@ public class Passenger extends User
     boolean wasAdded = false;
     if (journeies.contains(aJourney)) { return false; }
     journeies.add(aJourney);
-    if (aJourney.indexOfPassenger(this) != -1)
+    if (aJourney.indexOfStop(this) != -1)
     {
       wasAdded = true;
     }
     else
     {
-      wasAdded = aJourney.addPassenger(this);
+      wasAdded = aJourney.addStop(this);
       if (!wasAdded)
       {
         journeies.remove(aJourney);
@@ -94,13 +93,13 @@ public class Passenger extends User
 
     int oldIndex = journeies.indexOf(aJourney);
     journeies.remove(oldIndex);
-    if (aJourney.indexOfPassenger(this) == -1)
+    if (aJourney.indexOfStop(this) == -1)
     {
       wasRemoved = true;
     }
     else
     {
-      wasRemoved = aJourney.removePassenger(this);
+      wasRemoved = aJourney.removeStop(this);
       if (!wasRemoved)
       {
         journeies.add(oldIndex,aJourney);
@@ -147,9 +146,8 @@ public class Passenger extends User
     journeies.clear();
     for(Journey aJourney : copyOfJourneies)
     {
-      aJourney.removePassenger(this);
+      aJourney.removeStop(this);
     }
-    super.delete();
   }
 
 }

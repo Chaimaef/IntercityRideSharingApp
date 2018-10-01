@@ -1,4 +1,5 @@
-package ca.mcgill.ecse321.intercityRideSharingSystem;
+package ca.mcgill.ecse321.intercityRideSharing.application;
+
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
