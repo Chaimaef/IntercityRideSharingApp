@@ -1,0 +1,23 @@
+1. application frontend
+Driver opreation:
+advertise journey --> {
+	1. information about vehicle 
+	2. available seating 
+	3.locations he will stop 
+	4. cost for each pssenger for each stop 
+}
+
+Passenger operation: 
+search ads and sort them ---> {
+    0. need to access the ads 
+	1. sort by criteria : car type, price 
+	2. select a journey
+}
+
+2. web frontend 
+administaror operation: (full access to backend)
+overview of ride sharing network ---> {
+	1. checking status of active drivers and passengers 
+	2. list top drivers and passengers based on historical data (need to access the log)
+}
+
