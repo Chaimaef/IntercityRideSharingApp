@@ -1,0 +1,38 @@
+namespace ca.mcgill.ecse321.intercityRideSharingSystem;
+class User
+{
+  name;
+}
+
+class Administrator
+{
+  isA User;
+}
+
+class Passenger
+{
+  isA User;
+}
+
+class Driver
+{
+  isA User;
+  * -- * Journey;
+}
+
+class Stop
+{
+}
+
+class Journey
+{
+  Date date;
+int price;
+boolean flag;
+destination;
+departure;
+* -- * Stop;
+  * -- * Passenger;
+}
+
+
