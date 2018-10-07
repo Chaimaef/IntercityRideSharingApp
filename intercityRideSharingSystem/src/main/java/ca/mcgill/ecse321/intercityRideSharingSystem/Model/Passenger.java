@@ -22,7 +22,7 @@ private String passengerName;
 
 @Id
 @Column(name="passengerid")
-@GeneratedValue(strategy = GenerationType.AUTO)
+//@GeneratedValue(strategy = GenerationType.AUTO)
 public int getPassengerId() {
 	return passengerId;
 }

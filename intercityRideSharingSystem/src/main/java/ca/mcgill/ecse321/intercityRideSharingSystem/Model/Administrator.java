@@ -18,7 +18,7 @@ this.id = value;
     }
 @Id
 @Column(name="adminstratorid")
-@GeneratedValue(strategy = GenerationType.AUTO)
+//@GeneratedValue(strategy = GenerationType.AUTO)
 public Integer getId() {
 return this.id;
        }   

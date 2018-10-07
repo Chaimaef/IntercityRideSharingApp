@@ -22,19 +22,19 @@ public class intercityRideSharingSystemRepository {
 		if(role.equals("Passenger")){
 		   Passenger p = new Passenger(); 
 		   p.setName(name);
-		   //p.setPassengerId(u.getId());
+		   p.setPassengerId(u.getId());
 		   entityManager.persist(p);
 		}
 		else if(role.equals("Driver")){
 			Driver d = new Driver(); 
 			d.setName(name);
-			//d.setId(u.getId());
+			d.setId(u.getId());
 			entityManager.persist(d);
 		 }
 		else{
 			Administrator a = new Administrator(); 
 			a.setName(name);
-			//a.setId(u.getId());
+			a.setId(u.getId());
 			entityManager.persist(a);
 		 }
 		return u;

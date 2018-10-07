@@ -31,7 +31,7 @@ this.id = value;
     }
 @Id
 @Column(name="driverid")
-@GeneratedValue(strategy = GenerationType.AUTO)
+//@GeneratedValue(strategy = GenerationType.AUTO)
 public Integer getId() {
 return this.id;
     }
