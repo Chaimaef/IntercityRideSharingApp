@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<com.yattasolutions.uml.diagrams.classifier:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.yattasolutions.uml.diagrams.classifier="http://ns.yatta-solutions.com/umllab/diagrams/classifier/1.1.0" xmi:id="_1_jCgMWlEeiHN-lVavPcnw">
-  <modelElement href="intercityRideSharingSystem.uml#_19w50MWlEeiHN-lVavPcnw"/>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_a_jYMMWrEeiHN-lVavPcnw" name="NewClass1">
-    <modelElement href="intercityRideSharingSystem.uml#_a_UusMWrEeiHN-lVavPcnw"/>
-    <visualProperties xmi:id="_a_j_QMWrEeiHN-lVavPcnw" position="81.0,194.0" size="-1.0,-1.0"/>
-    <visibility xmi:id="_a_j_QcWrEeiHN-lVavPcnw" label="+"/>
-  </nodes>
-</com.yattasolutions.uml.diagrams.classifier:ClassDiagram>
