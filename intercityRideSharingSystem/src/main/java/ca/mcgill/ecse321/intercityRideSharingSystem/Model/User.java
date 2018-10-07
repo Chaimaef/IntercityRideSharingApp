@@ -40,6 +40,6 @@ public String getRole() {
         }
 
 public String toString() {
-            return "User [id=" + id + ", userName|" + name + "| userRole=" + role + "]";
+            return "User [id=" + id + ", userName #" + name + "# userRole=" + role + "]";
           }
    }

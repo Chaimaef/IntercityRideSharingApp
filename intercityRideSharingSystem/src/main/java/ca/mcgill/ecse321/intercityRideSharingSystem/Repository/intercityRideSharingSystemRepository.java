@@ -47,10 +47,16 @@ public class intercityRideSharingSystemRepository {
 		 return user;
 	}
 
-	// @Transactional
-	// public User createJourney(String startTime, Set<Stop> stops, String vehicleType, int avilableSeating, String driver) {
-	// 	 User user = entityManager.find(User.class, Integer.parseInt(id));
-	// 	 return user;
-	// }
+	@Transactional
+	public Journey createJourney(String startTime, String stops, String vehicleType, String avilableSeating, String driver) {
+		Journey journey = new Journey(); 
+		journey.setStartTime(startTime); 
+		journey.setStop(stops);
+		journey.setVehicleType(vehicleType); 
+		journey.setAvailableSeating(avilableSeating); 
+		journey.setDriver(driver);
+		entityManager.persist(journey);
+		return journey;
+	}
 	}
 

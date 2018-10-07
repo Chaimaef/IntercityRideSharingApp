@@ -17,7 +17,7 @@ public class Journey{
 private String startTime;
 private int journeyId;
 private String vehicleType; 
-private int availableSeating; 
+private String availableSeating; 
 
 @Id
 @Column(name="journeyId")
@@ -38,39 +38,42 @@ this.startTime = value;
 public String getStartTime() {
 return this.startTime;
     }
-private Set<Stop> stop;
+//private Set<Stop> stop;
+private String stop; 
 
-@ManyToMany
+//@ManyToMany
 @Column(name="journeyStops")  
-public Set<Stop> getStop() {
+public String getStop() {
    return this.stop;
 }
 
-public void setStop(Set<Stop> stops) {
+public void setStop(String stops) {
    this.stop = stops;
 }
 
-private Set<Driver> driver;
+//private Set<Driver> driver;
+private String driver; 
 
-@ManyToMany(mappedBy="journey")
+//@ManyToMany(mappedBy="journey")
 @Column(name="journeyDriver")  
-public Set<Driver> getDriver() {
+public String getDriver() {
    return this.driver;
 }
 
-public void setDriver(Set<Driver> drivers) {
+public void setDriver(String drivers) {
    this.driver = drivers;
 }
 
-private Set<Passenger> passenger;
+//private Set<Passenger> passenger;
+private String passenger; 
 
-@ManyToMany(mappedBy="journey")
+//@ManyToMany(mappedBy="journey")
 @Column(name="journeyPassengers")  
-public Set<Passenger> getPassenger() {
+public String getPassenger() {
    return this.passenger;
 }
 
-public void setPassenger(Set<Passenger> passengers) {
+public void setPassenger(String passengers) {
    this.passenger = passengers;
 }
 
@@ -83,24 +86,16 @@ public String getVehicleType() {
     return this.vehicleType;
         }
 
-public void setAvailableSeating(int value) {
+public void setAvailableSeating(String value) {
             this.availableSeating = value;
                 }
 @Column(name="journeyAvailableSeating")  
-public int getAvailableSeating() {
+public String getAvailableSeating() {
             return this.availableSeating;
                 }   
-public String stopsToString(){
-    String stops= ""; 
-    for (Stop s : stop){
-        stops += s.toString(); 
-    }
-    return stops; 
-
-}
 public String toString() {
-                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating +"]";
-                  }
+                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating + ", stops=" + stop + ", drivers=" + driver+"]";
+                }
     
 
 }
