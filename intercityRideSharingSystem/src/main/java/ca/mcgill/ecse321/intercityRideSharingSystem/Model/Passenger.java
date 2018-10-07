@@ -16,6 +16,7 @@ public class Passenger{
 
 private Set<Journey> journey;
 private int passengerId;
+private String passengerName;
 
 @Id
 @Column(name="passengerid")
@@ -27,8 +28,17 @@ public int getPassengerId() {
 public void setPassengerId(int passengerId) {
 	this.passengerId = passengerId;
 }
+public void setName(String value) {
+    this.passengerName = value;
+        }
+
+@Column(name="passengerName")
+public String getName() {
+    return this.passengerName;
+        }
 
 @ManyToMany
+@Column(name="passengerJourney")
 public Set<Journey> getJourney() {
    return this.journey;
 }

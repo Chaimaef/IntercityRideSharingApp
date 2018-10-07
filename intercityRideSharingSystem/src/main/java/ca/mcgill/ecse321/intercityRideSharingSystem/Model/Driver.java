@@ -15,9 +15,10 @@ import javax.persistence.Table;
 public class Driver{
 private String name;
 
-   public void setName(String value) {
+public void setName(String value) {
 this.name = value;
     }
+@Column(name="driverName")   
 public String getName() {
 return this.name;
     }
@@ -35,6 +36,7 @@ return this.id;
 private Set<Journey> journey;
 
 @ManyToMany
+@Column(name="driverJourney") 
 public Set<Journey> getJourney() {
    return this.journey;
 }

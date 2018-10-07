@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 @Table(name="Userst04")
 public class User{
 private String name;
+private String role;
 
 public void setName(String value) {
     this.name = value;
     }
 
+@Column(name="userName")
 public String getName() {
 return this.name;
     }
@@ -28,4 +30,12 @@ this.id = value;
 public Integer getId() {
 return this.id;
        }
+public void setRole(String value) {
+        this.role = value;
+        }
+    
+@Column(name="userRole")
+public String getRole() {
+    return this.role;
+        }
    }
