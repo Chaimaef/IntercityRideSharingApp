@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod; 
 import org.springframework.web.bind.annotation.RequestParam; 
-
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User; 
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
 
 @RestController
 public class intercityRideSharingSystemController {
+	Date date = new Date();
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+    String strDate = dateFormat.format(date);
+ 
 
 	@Autowired
 	intercityRideSharingSystemRepository repository;
@@ -37,14 +42,16 @@ public class intercityRideSharingSystemController {
 		}
 		return user.toString();
 	}
-	// @RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
-	// public String  createJourney(@RequestParam(value="id", defaultValue="John") String id) {
-	// 	User user = repository.getUser(id);
-	// 	if(user == null) {
-	// 		return "NOT FOUND";
-	// 	}
-	// 	return user.toString();
-	// }
+	@RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
+	public String  createJourney(@RequestParam(value="time", defaultValue = "now") String startTime, 
+	@RequestParam(value="stops", defaultValue = "-1000") String stops, 
+	@RequestParam(value="vehicle", defaultValue = "-1000") String vehicleType, 
+	@RequestParam(value="availableSeating", defaultValue = "-1000") String availableSeating,
+	@RequestParam(value="driver", defaultValue = "nobody") String drivers) {
+		
+		
+		return null; 
+	}
 
 }
 

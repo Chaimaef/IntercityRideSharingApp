@@ -89,6 +89,18 @@ public void setAvailableSeating(int value) {
 @Column(name="journeyAvailableSeating")  
 public int getAvailableSeating() {
             return this.availableSeating;
-                }        
+                }   
+public String stopsToString(){
+    String stops= ""; 
+    for (Stop s : stop){
+        stops += s.toString(); 
+    }
+    return stops; 
+
+}
+public String toString() {
+                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating +"]";
+                  }
+    
 
 }
