@@ -22,46 +22,40 @@ import static org.mockito.Mockito.when;
 public class EventregistrationApplicationTests {
 
 	@Mock
-private intercityRideSharingSystemRepository participantDao;
+	private intercityRideSharingSystemRepository participantDao;
 
-@InjectMocks
-private intercityRideSharingSystemController controller;
+	@InjectMocks
+	private intercityRideSharingSystemController controller;
 
-private static final String PARTICIPANT_KEY = "TestParticipant";
-private static final String PARTICIPANT_ROLE = "Driver";
-private static  Integer PARTICIPANT_ID ;
-private static  String TEMPSTRING ;
-private User user;
+	private static final String PARTICIPANT_KEY = "TestParticipant";
+	private static final String PARTICIPANT_ROLE = "Driver";
+	private static  Integer PARTICIPANT_ID ;
+	private static  String TEMPSTRING ;
+	private User user;
 
 
-private static final String NONEXISTING_KEY = "NotAParticipant";
+	private static final String NONEXISTING_KEY = "NotAParticipant";
 
-@Before
-public void setMockOutput() {
-  when(participantDao.getUser(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
-    if(invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
-       user = participantDao.createUser(PARTICIPANT_KEY, PARTICIPANT_ROLE);
-      return user;
-    } else {
-      return null;
-    }
-  });
-  }
+	@Before
+	public void setMockOutput() {
+	  when(participantDao.getUser(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+	    if(invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
+	      User participant = new User();
+	      participant.setName(PARTICIPANT_KEY);
+	      participant.setRole(PARTICIPANT_ROLE);
+	      return participant;
+	    } else {
+	      return null;
+	    }
+	  });
+	}
+	@Test
+	public void testParticipantQueryFound() {
+	  assertEquals(controller.queryUser(PARTICIPANT_KEY),"User [id=null, userName #TestParticipant# userRole=Driver]");
+	}
 
 	@Test
-public void testUserQueryFound() {
-	PARTICIPANT_ID = user.getId();
-	TEMPSTRING =controller.queryUser(String.valueOf(PARTICIPANT_ID));
-	String[] parts = TEMPSTRING.split("|");
-	TEMPSTRING = parts[1].trim();
-  assertEquals(TEMPSTRING, PARTICIPANT_KEY);
-}
-
-@Test
-public void testUserQueryNotFound() {
-		PARTICIPANT_ID = user.getId();
-
-  assertEquals(controller.queryUser(String.valueOf(PARTICIPANT_ID)), "Not Found");
-}
-
+	public void testParticipantQueryNotFound() {
+	  assertEquals(controller.queryUser(NONEXISTING_KEY), "Not Found");
+	}
 }
