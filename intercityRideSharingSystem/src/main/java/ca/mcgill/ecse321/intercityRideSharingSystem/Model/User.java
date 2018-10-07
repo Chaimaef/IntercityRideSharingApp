@@ -38,4 +38,8 @@ public void setRole(String value) {
 public String getRole() {
     return this.role;
         }
+
+public String toString() {
+            return "User [id=" + id + ", userName=" + name + ", userRole=" + role + "]";
+          }
    }

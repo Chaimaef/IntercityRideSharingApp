@@ -14,7 +14,6 @@ import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideShar
 
 @RestController
 public class intercityRideSharingSystemController {
-	 //private final AtomicLong counter = new AtomicLong();
 
 	@Autowired
 	intercityRideSharingSystemRepository repository;
@@ -23,27 +22,29 @@ public class intercityRideSharingSystemController {
 	public String greeting() {
 		return "Hello world!";
 	}
- //    @RequestMapping(value = "/user" , method = {RequestMethod.POST, RequestMethod.GET})
-	//     public Integer createUser(@RequestParam(value="name", defaultValue="John") String name) {driver.setSeating(Long.parseLong(seatingInput)); 
-	// 	User user = repository.createUser(name);(int) (long) theLong
-	// 	return user.getId();
-	// }
+
 	@RequestMapping(value = "/user", method = {RequestMethod.POST, RequestMethod.GET})
-	//public String createUser(@PathVariable("name") String name) {
-	public String createUser(@RequestParam(value="name", defaultValue="John") String name) {
-		 User u = repository.createUser(name);
-		 return u.getName();
+	public String createUser(@RequestParam(value="name", defaultValue="John") String name, @RequestParam(value="role", defaultValue="Driver") String role) {
+		 User u = repository.createUser(name, role);
+		 return u.toString();
 	}
 
-	//@GetMapping("/users/{name}")
 	@RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
 	public String queryUser(@RequestParam(value="id", defaultValue="John") String id) {
 		User user = repository.getUser(id);
 		if(user == null) {
 			return "NOT FOUND";
 		}
-		return user.getName();
+		return user.toString();
 	}
+	// @RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
+	// public String queryUser(@RequestParam(value="id", defaultValue="John") String id) {
+	// 	User user = repository.getUser(id);
+	// 	if(user == null) {
+	// 		return "NOT FOUND";
+	// 	}
+	// 	return user.getName();
+	// }
 
 }
 

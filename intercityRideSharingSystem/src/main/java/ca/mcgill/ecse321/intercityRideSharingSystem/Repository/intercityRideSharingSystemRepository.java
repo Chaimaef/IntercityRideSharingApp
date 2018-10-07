@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
 
 @Repository
 public class intercityRideSharingSystemRepository {
@@ -14,10 +14,29 @@ public class intercityRideSharingSystemRepository {
 	EntityManager entityManager;
 
 	@Transactional
-	public User createUser(String name) {
+	public User createUser(String name, String role) {
 		User u = new User();
 		u.setName(name);
-		entityManager.persist(u);
+		u.setRole(role);
+	    entityManager.persist(u);		
+		if(role.equals("Passenger")){
+		   Passenger p = new Passenger(); 
+		   p.setName(name);
+		   //p.setPassengerId(u.getId());
+		   entityManager.persist(p);
+		}
+		else if(role.equals("Driver")){
+			Driver d = new Driver(); 
+			d.setName(name);
+			//d.setId(u.getId());
+			entityManager.persist(d);
+		 }
+		else{
+			Administrator a = new Administrator(); 
+			a.setName(name);
+			//a.setId(u.getId());
+			entityManager.persist(a);
+		 }
 		return u;
 	}
 

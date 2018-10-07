@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import java.util.Set;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 @Table(name="Passengert04")
@@ -54,8 +56,8 @@ public Set<User> getUser() {
    return this.user;
 }
 
-public void setUser(Set<User> users) {
-   this.user = users;
+public void setUser(Set<User> user) {
+   this.user = user;
 }
 
 }

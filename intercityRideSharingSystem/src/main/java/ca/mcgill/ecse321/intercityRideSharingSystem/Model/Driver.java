@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 
 import java.util.Set;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
@@ -52,8 +54,8 @@ public Set<User> getUser() {
    return this.user;
 }
 
-public void setUser(Set<User> users) {
-   this.user = users;
+public void setUser(Set<User> user) {
+   this.user = user;
 }
 
 }
