@@ -24,26 +24,26 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping(value = "/user", method = {RequestMethod.POST, RequestMethod.GET})
-	public String createUser(@RequestParam(value="name", defaultValue="John") String name, @RequestParam(value="role", defaultValue="Driver") String role) {
+	public Integer createUser(@RequestParam(value="name", defaultValue="John") String name, @RequestParam(value="role", defaultValue="Driver") String role) {
 		 User u = repository.createUser(name, role);
-		 return u.toString();
+		 return u.getId();
 	}
 
 	@RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
-	public String queryUser(@RequestParam(value="id", defaultValue="John") String id) {
+	public String queryUser(@RequestParam(value="id", defaultValue="-1000") String id) {
 		User user = repository.getUser(id);
 		if(user == null) {
-			return "NOT FOUND";
+			return "Not Found";
 		}
 		return user.toString();
 	}
-	// @RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
-	// public String queryUser(@RequestParam(value="id", defaultValue="John") String id) {
+	// @RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
+	// public String  createJourney(@RequestParam(value="id", defaultValue="John") String id) {
 	// 	User user = repository.getUser(id);
 	// 	if(user == null) {
 	// 		return "NOT FOUND";
 	// 	}
-	// 	return user.getName();
+	// 	return user.toString();
 	// }
 
 }

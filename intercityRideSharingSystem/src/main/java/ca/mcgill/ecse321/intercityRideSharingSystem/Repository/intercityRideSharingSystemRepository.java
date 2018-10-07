@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.intercityRideSharingSystem.Repository;
 import javax.persistence.EntityManager;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,11 @@ public class intercityRideSharingSystemRepository {
 		 User user = entityManager.find(User.class, Integer.parseInt(id));
 		 return user;
 	}
+
+	// @Transactional
+	// public User createJourney(String startTime, Set<Stop> stops, String vehicleType, int avilableSeating, String driver) {
+	// 	 User user = entityManager.find(User.class, Integer.parseInt(id));
+	// 	 return user;
+	// }
 	}
 

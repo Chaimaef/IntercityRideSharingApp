@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import java.util.Set;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name="Journeyt04")
