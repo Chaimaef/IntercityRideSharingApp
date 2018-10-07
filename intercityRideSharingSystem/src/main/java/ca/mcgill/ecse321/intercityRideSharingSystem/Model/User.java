@@ -9,11 +9,8 @@ import javax.persistence.GenerationType;
 @Table(name="Userst04")
 public class User{
 private String name;
-// public User (String name) {
-// 	this.name = name; 
-// }
 
-   public void setName(String value) {
+public void setName(String value) {
     this.name = value;
     }
 
@@ -26,6 +23,8 @@ public void setId(Integer value) {
 this.id = value;
     }
 @Id
+@Column(name="userid")
+@GeneratedValue(strategy = GenerationType.AUTO)
 public Integer getId() {
 return this.id;
        }

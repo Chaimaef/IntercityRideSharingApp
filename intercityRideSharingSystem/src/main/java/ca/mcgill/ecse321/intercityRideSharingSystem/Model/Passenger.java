@@ -5,11 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import java.util.Set;
 import javax.persistence.ManyToMany;
 
 @Entity
+@Table(name="Passengert04")
 public class Passenger{
 
 private Set<Journey> journey;
