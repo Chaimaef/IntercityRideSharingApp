@@ -35,12 +35,12 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
-	public String queryUser(@RequestParam(value="id", defaultValue="-1000") String id) {
-		User user = repository.getUser(id);
+	public String queryUser(@RequestParam(value="name", defaultValue="-1000") String name) {
+		String user = repository.getUser(name);
 		if(user == null) {
 			return "Not Found";
 		}
-		return user.toString();
+		return user;
 	}
 	@RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
 	public String  createJourney(@RequestParam(value="time", defaultValue = "now") String startTime, 
@@ -54,7 +54,14 @@ public class intercityRideSharingSystemController {
 	Journey journey = repository.createJourney(startTime, stops, vehicleType, availableSeating, drivers);
 		return ("Created journey " + journey.toString()); 
 	}
-
+	@RequestMapping(value = "/journeyg", method = {RequestMethod.POST, RequestMethod.GET})
+	public String queryJourney(@RequestParam(value="stop", defaultValue="montreal") String stop) {
+		String journeyFound = repository.getJourney(stop);
+		if(journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
 }
 
 
