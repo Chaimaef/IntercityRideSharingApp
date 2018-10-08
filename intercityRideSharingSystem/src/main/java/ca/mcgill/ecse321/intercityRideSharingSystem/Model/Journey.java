@@ -18,6 +18,7 @@ private String startTime;
 private int journeyId;
 private String vehicleType; 
 private String availableSeating; 
+private String price; 
 
 @Id
 @Column(name="journeyId")
@@ -50,12 +51,19 @@ public String getStop() {
 public void setStop(String stops) {
    this.stop = stops;
 }
+@Column(name="prices")  
+public String getPrice() {
+   return this.price;
+}
 
+public void setPrice(String value) {
+   this.price = value;
+}
 //private Set<Driver> driver;
 private String driver; 
 
 //@ManyToMany(mappedBy="journey")
-@Column(name="journeyDriver")  
+@Column(name="journey_driver")  
 public String getDriver() {
    return this.driver;
 }
@@ -94,7 +102,7 @@ public String getAvailableSeating() {
             return this.availableSeating;
                 }   
 public String toString() {
-                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating + ", stops=" + stop + ", drivers=" + driver+"]";
+                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price" + price +", drivers=" + driver+ "]";
                 }
     
 

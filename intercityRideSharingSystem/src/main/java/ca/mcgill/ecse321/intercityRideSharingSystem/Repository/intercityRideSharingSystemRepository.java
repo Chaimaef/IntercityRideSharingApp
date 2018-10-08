@@ -14,7 +14,7 @@ import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Passenger;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Administrator;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Stop;
+
 
 @Repository
 public class intercityRideSharingSystemRepository {
@@ -61,10 +61,11 @@ public class intercityRideSharingSystemRepository {
 	}
 
 	@Transactional
-	public Journey createJourney(String startTime, String stops, String vehicleType, String avilableSeating, String driver) {
+	public Journey createJourney(String startTime, String stops, String price, String vehicleType, String avilableSeating, String driver) {
 		Journey journey = new Journey(); 
 		journey.setStartTime(startTime); 
 		journey.setStop(stops);
+		journey.setPrice(price);
 		journey.setVehicleType(vehicleType); 
 		journey.setAvailableSeating(avilableSeating); 
 		journey.setDriver(driver);
