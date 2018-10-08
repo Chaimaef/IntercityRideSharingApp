@@ -55,14 +55,6 @@ public class EventregistrationApplicationTests {
 	      return null;
 	    }
 	  });
-	  when(((OngoingStubbing<User>) participantDao.createJourney(Start,Stops,VehiculeType,Seating,driver)).thenAnswer( (InvocationOnMock invocation) -> {
-		    if(invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
-		      User participant = new User();
-		      return participant;
-		    } else {
-		      return null;
-		    }
-		  }));
 	}
 	@Test
 	public void testParticipantQueryFound() {

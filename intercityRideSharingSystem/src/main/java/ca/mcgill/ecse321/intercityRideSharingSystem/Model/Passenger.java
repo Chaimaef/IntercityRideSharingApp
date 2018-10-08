@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Rating;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Status;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 
 import java.util.Set;
 import javax.persistence.ManyToMany;
@@ -18,12 +18,11 @@ import javax.persistence.OneToOne;
 @Entity
 @Table(name="Passengert04")
 public class Passenger{
-private Status status;
-private Rating rating;
 private Set<Journey> journey;
 private int passengerId;
 private String passengerName;
-
+private Status status;
+private Rating rating;
 @Id
 @Column(name="passengerid")
 //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,27 +62,18 @@ public Set<User> getUser() {
 public void setUser(Set<User> user) {
    this.user = user;
 }
-public enum Status {
-    inAJourney,idling
-}
-    
-public Status getStatus() { 
-	return status;
-	}
 public void setStatus(Status status) {
-	this.status = status;
-	}
-
-public enum Rating {
-    one,two,three,four,five
+	this.status=status;
 }
-    
-public Rating getRating() { 
-	return rating;
-	}
-
+public Status getStatus(){
+	return this.status;
+}
+public Rating getRating(){
+	return this.rating;
+}
 public void setRating(Rating rating) {
-	this.rating = rating;
-	}
+	this.rating=rating;
+}
 
+    
 }

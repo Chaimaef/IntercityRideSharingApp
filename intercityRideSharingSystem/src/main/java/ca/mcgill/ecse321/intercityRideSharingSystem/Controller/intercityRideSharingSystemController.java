@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User; 
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Rating;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Status; 
 @RestController
 public class intercityRideSharingSystemController {
 	Date date = new Date();
@@ -35,7 +35,7 @@ public class intercityRideSharingSystemController {
 			@RequestParam(value="role", defaultValue="Driver") String role,
 			@RequestParam(value="status", defaultValue = "idling") Status status,
 			@RequestParam(value="rating", defaultValue = "five") Rating rating){
-		 User u = repository.createUser(name, role);
+		 User u = repository.createUser(name, role,status,rating);
 		 return u.getId();
 	}
 

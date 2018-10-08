@@ -12,13 +12,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
+
 @Entity
 @Table(name="Drivert04")
 public class Driver{
 private String name;
+private Integer id;
 private Status status;
 private Rating rating;
-private Integer id;
 public void setName(String value) {
 this.name = value;
     }
@@ -56,35 +59,20 @@ private Set<User> user;
 public Set<User> getUser() {
    return this.user;
 }
-
-public enum Rating {
-    one,two,three,four,five
-}
-    
-public Rating getRating() { 
-	return rating;
-	}
-
-public void setRating(Rating rating) {
-	this.rating = rating;
-	}
-
-
-
-
-
 public void setUser(Set<User> user) {
    this.user = user;
 }
-public enum Status {
-    inAJourney,idling
-}
-    
-public Status getStatus() { 
-	return status;
-	}
 public void setStatus(Status status) {
-	this.status = status;
-	}
+	this.status=status;
+}
+public Status getStatus(){
+	return this.status;
+}
+public Rating getRating(){
+	return this.rating;
+}
+public void setRating(Rating rating) {
+	this.rating=rating;
+}
 
 }
