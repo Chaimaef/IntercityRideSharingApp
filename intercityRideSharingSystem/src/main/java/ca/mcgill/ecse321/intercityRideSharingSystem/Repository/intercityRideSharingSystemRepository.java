@@ -1,12 +1,20 @@
 package ca.mcgill.ecse321.intercityRideSharingSystem.Repository;
 import javax.persistence.EntityManager;
 import java.util.Set;
+import java.util.List;
+import java.util.Collection; 
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Passenger;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Administrator;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey;
+
 
 @Repository
 public class intercityRideSharingSystemRepository {
@@ -42,21 +50,54 @@ public class intercityRideSharingSystemRepository {
 	}
 
 	@Transactional
-	public User getUser(String id) {
-		 User user = entityManager.find(User.class, Integer.parseInt(id));
-		 return user;
+	public String getUser(String name) {
+		 List <User> users = findUserWithName(name); 
+		 String userlist = ""; 
+		 for (User u : users){
+			  userlist += u.toString()+ "<br>"; 
+		 }
+		 //User user = entityManager.find(User.class, Integer.parseInt(id));
+		 return userlist; 
 	}
 
 	@Transactional
-	public Journey createJourney(String startTime, String stops, String vehicleType, String avilableSeating, String driver) {
+	public Journey createJourney(String startTime, String stops, String price, String vehicleType, String avilableSeating, String driver) {
 		Journey journey = new Journey(); 
 		journey.setStartTime(startTime); 
 		journey.setStop(stops);
+		journey.setPrice(price);
 		journey.setVehicleType(vehicleType); 
 		journey.setAvailableSeating(avilableSeating); 
 		journey.setDriver(driver);
 		entityManager.persist(journey);
 		return journey;
+	}
+    @SuppressWarnings("unchecked")
+	public List <User> findUserWithName(String name) {
+		return (List <User>)entityManager.createQuery(
+			"SELECT c FROM User c WHERE strpos(c.name, :userName) > 0")
+			.setParameter("userName", name)
+			//.setMaxResults(20)
+			.getResultList();
+		}
+	@SuppressWarnings("unchecked")
+	public List <Journey> findJourneyWithStop(String stop) {
+			return (List <Journey>)entityManager.createQuery(
+				"SELECT j FROM Journey j WHERE strpos(j.stop, :stops) > 0")
+				.setParameter("stops", stop)
+				//.setMaxResults(20)
+				.getResultList();
+			}
+
+	@Transactional
+	public String getJourney(String stops) {
+		List <Journey> journeys = findJourneyWithStop(stops); 
+		 String journeylist = ""; 
+		 for (Journey j : journeys){
+			  journeylist += j.toString()+ "<br>"; 
+		 }
+		 //User user = entityManager.find(User.class, Integer.parseInt(id));
+		 return journeylist; 
 	}
 	}
 

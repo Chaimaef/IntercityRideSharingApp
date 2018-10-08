@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User; 
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*; 
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Status; 
 @RestController
 public class intercityRideSharingSystemController {
 	Date date = new Date();
@@ -29,32 +31,43 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping(value = "/user", method = {RequestMethod.POST, RequestMethod.GET})
-	public Integer createUser(@RequestParam(value="name", defaultValue="John") String name, @RequestParam(value="role", defaultValue="Driver") String role) {
+	public Integer createUser(@RequestParam(value="name", defaultValue="John") String name,
+			@RequestParam(value="role", defaultValue="Driver") String role,
+			@RequestParam(value="status", defaultValue = "idling") Status status,
+			@RequestParam(value="rating", defaultValue = "five") Rating rating){
 		 User u = repository.createUser(name, role);
 		 return u.getId();
 	}
 
 	@RequestMapping(value = "/userg", method = {RequestMethod.POST, RequestMethod.GET})
-	public String queryUser(@RequestParam(value="id", defaultValue="-1000") String id) {
-		User user = repository.getUser(id);
+	public String queryUser(@RequestParam(value="name", defaultValue="-1000") String name) {
+		String user = repository.getUser(name);
 		if(user == null) {
 			return "Not Found";
 		}
-		return user.toString();
+		return user;
 	}
 	@RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
 	public String  createJourney(@RequestParam(value="time", defaultValue = "now") String startTime, 
 	@RequestParam(value="stops", defaultValue = "-1000") String stops, 
+	@RequestParam(value="price", defaultValue = "-1000") String prices, 
 	@RequestParam(value="vehicle", defaultValue = "-1000") String vehicleType, 
 	@RequestParam(value="availableSeating", defaultValue = "-1000") String availableSeating,
-	@RequestParam(value="driver", defaultValue = "nobody") String drivers) {
+	@RequestParam(value="driver", defaultValue = "nobody") String drivers){
 	if (startTime.equals("now")){
 		startTime = strDate; 
 	}
-	Journey journey = repository.createJourney(startTime, stops, vehicleType, availableSeating, drivers);
+	Journey journey = repository.createJourney(startTime, stops, prices, vehicleType, availableSeating, drivers);
 		return ("Created journey " + journey.toString()); 
 	}
-
+	@RequestMapping(value = "/journeyg", method = {RequestMethod.POST, RequestMethod.GET})
+	public String queryJourney(@RequestParam(value="stop", defaultValue="montreal") String stop) {
+		String journeyFound = repository.getJourney(stop);
+		if(journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
 }
 
 

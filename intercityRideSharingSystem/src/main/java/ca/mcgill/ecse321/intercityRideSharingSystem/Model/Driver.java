@@ -16,19 +16,22 @@ import javax.persistence.Table;
 @Table(name="Drivert04")
 public class Driver{
 private String name;
-
+private Status status;
+private Rating rating;
+private Integer id;
 public void setName(String value) {
 this.name = value;
     }
+
 @Column(name="driverName")   
 public String getName() {
 return this.name;
     }
-private Integer id;
 
 public void setId(Integer value) {
 this.id = value;
     }
+
 @Id
 @Column(name="driverid")
 //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,8 +57,34 @@ public Set<User> getUser() {
    return this.user;
 }
 
+public enum Rating {
+    one,two,three,four,five
+}
+    
+public Rating getRating() { 
+	return rating;
+	}
+
+public void setRating(Rating rating) {
+	this.rating = rating;
+	}
+
+
+
+
+
 public void setUser(Set<User> user) {
    this.user = user;
 }
+public enum Status {
+    inAJourney,idling
+}
+    
+public Status getStatus() { 
+	return status;
+	}
+public void setStatus(Status status) {
+	this.status = status;
+	}
 
 }
