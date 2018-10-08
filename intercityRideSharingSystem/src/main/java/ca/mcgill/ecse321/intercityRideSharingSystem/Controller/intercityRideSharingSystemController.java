@@ -50,13 +50,14 @@ public class intercityRideSharingSystemController {
 	@RequestMapping(value = "/createj", method = {RequestMethod.POST, RequestMethod.GET})
 	public String  createJourney(@RequestParam(value="time", defaultValue = "now") String startTime, 
 	@RequestParam(value="stops", defaultValue = "-1000") String stops, 
+	@RequestParam(value="price", defaultValue = "-1000") String prices, 
 	@RequestParam(value="vehicle", defaultValue = "-1000") String vehicleType, 
 	@RequestParam(value="availableSeating", defaultValue = "-1000") String availableSeating,
 	@RequestParam(value="driver", defaultValue = "nobody") String drivers){
 	if (startTime.equals("now")){
 		startTime = strDate; 
 	}
-	Journey journey = repository.createJourney(startTime, stops, vehicleType, availableSeating, drivers);
+	Journey journey = repository.createJourney(startTime, stops, prices, vehicleType, availableSeating, drivers);
 		return ("Created journey " + journey.toString()); 
 	}
 	@RequestMapping(value = "/journeyg", method = {RequestMethod.POST, RequestMethod.GET})
