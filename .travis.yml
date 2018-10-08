@@ -3,7 +3,7 @@ jdk: oraclejdk8
 
 before_install: cd intercityRideSharingSystem
 
-install: mvn install -Dskiptests
+install: mvn install -DskipTests
 
 before_script: psql -c 'create database travis_ci_test;' -U postgres
 
