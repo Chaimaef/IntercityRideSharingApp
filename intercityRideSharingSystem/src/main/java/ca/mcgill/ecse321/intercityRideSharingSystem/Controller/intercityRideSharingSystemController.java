@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User; 
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*; 
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver.Status; 
 @RestController
 public class intercityRideSharingSystemController {
 	Date date = new Date();
@@ -29,7 +31,10 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping(value = "/user", method = {RequestMethod.POST, RequestMethod.GET})
-	public Integer createUser(@RequestParam(value="name", defaultValue="John") String name, @RequestParam(value="role", defaultValue="Driver") String role) {
+	public Integer createUser(@RequestParam(value="name", defaultValue="John") String name,
+			@RequestParam(value="role", defaultValue="Driver") String role,
+			@RequestParam(value="status", defaultValue = "idling") Status status,
+			@RequestParam(value="rating", defaultValue = "five") Rating rating){
 		 User u = repository.createUser(name, role);
 		 return u.getId();
 	}
@@ -47,7 +52,7 @@ public class intercityRideSharingSystemController {
 	@RequestParam(value="stops", defaultValue = "-1000") String stops, 
 	@RequestParam(value="vehicle", defaultValue = "-1000") String vehicleType, 
 	@RequestParam(value="availableSeating", defaultValue = "-1000") String availableSeating,
-	@RequestParam(value="driver", defaultValue = "nobody") String drivers) {
+	@RequestParam(value="driver", defaultValue = "nobody") String drivers){
 	if (startTime.equals("now")){
 		startTime = strDate; 
 	}
