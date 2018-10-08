@@ -12,98 +12,104 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name="Journeyt04")
-public class Journey{
-private String startTime;
-private int journeyId;
-private String vehicleType; 
-private String availableSeating; 
-private String price; 
+@Table(name = "Journeyt04")
+public class Journey {
+	private String startTime;
+	private int journeyId;
+	private String vehicleType;
+	private String availableSeating;
+	private String price;
 
-@Id
-@Column(name="journeyId")
-@GeneratedValue(strategy = GenerationType.AUTO)
-public int getJourneyId() {
-	return journeyId;
-}
+	@Id
+	@Column(name = "journeyId")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int getJourneyId() {
+		return journeyId;
+	}
 
-public void setJourneyId(int journeyId) {
-	this.journeyId = journeyId;
-}
-   
-public void setStartTime(String value) {
-this.startTime = value;
-    }
+	public void setJourneyId(int journeyId) {
+		this.journeyId = journeyId;
+	}
 
-@Column(name="journeyStartTime")    
-public String getStartTime() {
-return this.startTime;
-    }
-//private Set<Stop> stop;
-private String stop; 
+	public void setStartTime(String value) {
+		this.startTime = value;
+	}
 
-//@ManyToMany
-@Column(name="journeyStops")  
-public String getStop() {
-   return this.stop;
-}
+	@Column(name = "journeyStartTime")
+	public String getStartTime() {
+		return this.startTime;
+	}
 
-public void setStop(String stops) {
-   this.stop = stops;
-}
-@Column(name="prices")  
-public String getPrice() {
-   return this.price;
-}
+	// private Set<Stop> stop;
+	private String stop;
 
-public void setPrice(String value) {
-   this.price = value;
-}
-//private Set<Driver> driver;
-private String driver; 
+	// @ManyToMany
+	@Column(name = "journeyStops")
+	public String getStop() {
+		return this.stop;
+	}
 
-//@ManyToMany(mappedBy="journey")
-@Column(name="journey_driver")  
-public String getDriver() {
-   return this.driver;
-}
+	public void setStop(String stops) {
+		this.stop = stops;
+	}
 
-public void setDriver(String drivers) {
-   this.driver = drivers;
-}
+	@Column(name = "prices")
+	public String getPrice() {
+		return this.price;
+	}
 
-//private Set<Passenger> passenger;
-private String passenger; 
+	public void setPrice(String value) {
+		this.price = value;
+	}
 
-//@ManyToMany(mappedBy="journey")
-@Column(name="journeyPassengers")  
-public String getPassenger() {
-   return this.passenger;
-}
+	// private Set<Driver> driver;
+	private String driver;
 
-public void setPassenger(String passengers) {
-   this.passenger = passengers;
-}
+	// @ManyToMany(mappedBy="journey")
+	@Column(name = "journey_driver")
+	public String getDriver() {
+		return this.driver;
+	}
 
-public void setVehicleType(String value) {
-    this.vehicleType = value;
-        }
+	public void setDriver(String drivers) {
+		this.driver = drivers;
+	}
 
-@Column(name="journeyVehicleType")  
-public String getVehicleType() {
-    return this.vehicleType;
-        }
+	// private Set<Passenger> passenger;
+	private String passenger;
 
-public void setAvailableSeating(String value) {
-            this.availableSeating = value;
-                }
-@Column(name="journeyAvailableSeating")  
-public String getAvailableSeating() {
-            return this.availableSeating;
-                }   
-public String toString() {
-                    return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType + ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price" + price +", drivers=" + driver+ "]";
-                }
-    
+	// @ManyToMany(mappedBy="journey")
+	@Column(name = "journeyPassengers")
+	public String getPassenger() {
+		return this.passenger;
+	}
+
+	public void setPassenger(String passengers) {
+		this.passenger = passengers;
+	}
+
+	public void setVehicleType(String value) {
+		this.vehicleType = value;
+	}
+
+	@Column(name = "journeyVehicleType")
+	public String getVehicleType() {
+		return this.vehicleType;
+	}
+
+	public void setAvailableSeating(String value) {
+		this.availableSeating = value;
+	}
+
+	@Column(name = "journeyAvailableSeating")
+	public String getAvailableSeating() {
+		return this.availableSeating;
+	}
+
+	public String toString() {
+		return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType
+				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price" + price
+				+ ", drivers=" + driver + "]";
+	}
 
 }

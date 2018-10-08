@@ -14,6 +14,8 @@ import org.mockito.stubbing.OngoingStubbing;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Controller.intercityRideSharingSystemController;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,43 +33,49 @@ public class EventregistrationApplicationTests {
 
 	private static final String PARTICIPANT_KEY = "TestParticipant";
 	private static final String PARTICIPANT_ROLE = "Driver";
-	private static  Integer PARTICIPANT_ID ;
-	private static  String TEMPSTRING ;
+	private static Integer PARTICIPANT_ID;
+	private static String TEMPSTRING;
 	private User user;
 	private static final String Start = "start";
 	private static final String Stops = "stop1_stop2";
 	private static final String VehiculeType = "suv";
 	private static final String driver = "Driver";
 	private static final String Seating = "seating";
+	private Rating rating;
+	private Status status;
 
 	private static final String NONEXISTING_KEY = "NotAParticipant";
 
-	@SuppressWarnings("unchecked")
 	@Before
 	public void setMockOutput() {
-	  when(participantDao.getUser(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
-	    if(invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
-	      User participant = new User();
-	      participant.setName(PARTICIPANT_KEY);
-	      participant.setRole(PARTICIPANT_ROLE);
-	      return participant;
-	    } else {
-	      return null;
-	    }
-	  });
+		when(participantDao.getUser(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
+				User participant = new User();
+				participant.setName(PARTICIPANT_KEY);
+				participant.setRole(PARTICIPANT_ROLE);
+				participant.setRating(rating);
+				participant.setStatus(status);
+
+				return participant;
+			} else {
+				return null;
+			}
+		});
 	}
+
 	@Test
 	public void testParticipantQueryFound() {
-	  assertEquals(controller.queryUser(PARTICIPANT_KEY),"User [id=null, userName #TestParticipant# userRole=Driver]");
+		assertEquals(controller.queryUser(PARTICIPANT_KEY),
+				"User [id=null, userName #TestParticipant# userRole=Driver, status=null,rating=null ]");
 	}
 
 	@Test
 	public void testParticipantQueryNotFound() {
-	  assertEquals(controller.queryUser(NONEXISTING_KEY), "Not Found");
+		assertEquals(controller.queryUser(NONEXISTING_KEY), "Not Found");
 	}
-//	@Test
-//	public void testJourneyQueryFound() {
-//	  assertEquals();
-//	}
-	
+	// @Test
+	// public void testJourneyQueryFound() {
+	// assertEquals();
+	// }
+
 }

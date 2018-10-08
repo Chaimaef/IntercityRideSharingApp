@@ -16,64 +16,69 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-@Table(name="Passengert04")
-public class Passenger{
-private Set<Journey> journey;
-private int passengerId;
-private String passengerName;
-private Status status;
-private Rating rating;
-@Id
-@Column(name="passengerid")
-//@GeneratedValue(strategy = GenerationType.AUTO)
-public int getPassengerId() {
-	return passengerId;
-}
+@Table(name = "Passengert04")
+public class Passenger {
+	private Set<Journey> journey;
+	private int passengerId;
+	private String passengerName;
+	private Status status;
+	private Rating rating;
 
-public void setPassengerId(int passengerId) {
-	this.passengerId = passengerId;
-}
-public void setName(String value) {
-    this.passengerName = value;
-        }
+	@Id
+	@Column(name = "passengerid")
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	public int getPassengerId() {
+		return passengerId;
+	}
 
-@Column(name="passengerName")
-public String getName() {
-    return this.passengerName;
-        }
+	public void setPassengerId(int passengerId) {
+		this.passengerId = passengerId;
+	}
 
-@ManyToMany
-@Column(name="passengerJourney")
-public Set<Journey> getJourney() {
-   return this.journey;
-}
+	public void setName(String value) {
+		this.passengerName = value;
+	}
 
-public void setJourney(Set<Journey> journeys) {
-   this.journey = journeys;
-}
+	@Column(name = "passengerName")
+	public String getName() {
+		return this.passengerName;
+	}
 
-private Set<User> user;
+	@ManyToMany
+	@Column(name = "passengerJourney")
+	public Set<Journey> getJourney() {
+		return this.journey;
+	}
 
-@ManyToMany
-public Set<User> getUser() {
-   return this.user;
-}
+	public void setJourney(Set<Journey> journeys) {
+		this.journey = journeys;
+	}
 
-public void setUser(Set<User> user) {
-   this.user = user;
-}
-public void setStatus(Status status) {
-	this.status=status;
-}
-public Status getStatus(){
-	return this.status;
-}
-public Rating getRating(){
-	return this.rating;
-}
-public void setRating(Rating rating) {
-	this.rating=rating;
-}
+	private Set<User> user;
 
-    
+	@ManyToMany
+	public Set<User> getUser() {
+		return this.user;
+	}
+
+	public void setUser(Set<User> user) {
+		this.user = user;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Status getStatus() {
+		return this.status;
+	}
+
+	public Rating getRating() {
+		return this.rating;
+	}
+
+	public void setRating(Rating rating) {
+		this.rating = rating;
+	}
+
 }
