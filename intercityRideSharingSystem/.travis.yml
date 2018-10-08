@@ -1,5 +1,18 @@
 <<<<<<< HEAD
 language: java
 =======
+jdk:
+  - oraclejdk8
+
+install:
+  # - curl https://cli-assets.heroku.com/install.sh | sh
+
+deploy: 
+  provider: heroku
+  api-key:
+    secure: $HEROKU_API_KEY
+  app: git push heroku
+
+
 
 >>>>>>> refs/remotes/origin/master
