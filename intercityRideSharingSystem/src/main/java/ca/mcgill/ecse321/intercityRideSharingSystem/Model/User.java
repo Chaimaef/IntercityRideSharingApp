@@ -50,6 +50,9 @@ public class User {
 		return "User [id=" + id + ", userName #" + name + "# userRole=" + role + ",status=" + Status + ",rating="
 				+ rating + " ]";
 	}
+	public String statusToString() {
+		return "UserName #" + name + "# userRole=" + role + ",status="+ Status +" ]";
+	  }
 
 	public enum Status {
 		filter, inAJourney, idling

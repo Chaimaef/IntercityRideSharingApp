@@ -28,6 +28,8 @@ public class intercityRideSharingSystemRepository {
 		User u = new User();
 		u.setName(name);
 		u.setRole(role);
+		u.setStatus(status);
+		u.setRating(rating);
 		entityManager.persist(u);
 		if (role.equals("Passenger")) {
 			Passenger p = new Passenger();
@@ -101,5 +103,14 @@ public class intercityRideSharingSystemRepository {
 		}
 		// User user = entityManager.find(User.class, Integer.parseInt(id));
 		return journeylist;
+	}
+	@Transactional
+	public String getUserStatus(String username) {
+		List <User> users = findUserWithName(username); 
+		 String userstatus = ""; 
+		 for (User u : users){
+			  userstatus += u.statusToString()+ "<br>"; 
+		 }
+		 return userstatus; 
 	}
 }

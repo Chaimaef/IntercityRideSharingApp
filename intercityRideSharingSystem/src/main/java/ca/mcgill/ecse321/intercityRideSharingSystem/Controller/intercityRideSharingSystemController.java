@@ -71,4 +71,12 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
+	@RequestMapping(value = "/checks", method = {RequestMethod.POST, RequestMethod.GET})
+	public String checkUserStatus(@RequestParam(value="name", defaultValue="John") String username) {
+		String userstatus = repository.getUserStatus(username); 
+		if(userstatus == null) {
+			return "User Not Found";
+		}
+		return userstatus; 
+	}
 }
