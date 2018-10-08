@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import org.junit.Before;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -35,7 +36,7 @@ public class EventregistrationApplicationTests {
 	private static final String PARTICIPANT_ROLE = "Driver";
 	private static Integer PARTICIPANT_ID;
 	private static String TEMPSTRING;
-	private User user;
+	private User participant;
 	private static final String Start = "start";
 	private static final String Stops = "stop1_stop2";
 	private static final String VehiculeType = "suv";
@@ -48,14 +49,13 @@ public class EventregistrationApplicationTests {
 
 	@Before
 	public void setMockOutput() {
-		when(participantDao.getUser(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+		when(participantDao.getUserbyName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(PARTICIPANT_KEY)) {
-				User participant = new User();
+			    participant = new User();
 				participant.setName(PARTICIPANT_KEY);
 				participant.setRole(PARTICIPANT_ROLE);
 				participant.setRating(rating);
 				participant.setStatus(status);
-
 				return participant;
 			} else {
 				return null;
@@ -65,17 +65,17 @@ public class EventregistrationApplicationTests {
 
 	@Test
 	public void testParticipantQueryFound() {
-		assertEquals(controller.queryUser(PARTICIPANT_KEY),
-				"User [id=null, userName #TestParticipant# userRole=Driver, status=null,rating=null ]");
+		//String expectedResult = "User [id=null, userName #TestParticipant# userRole=Driver, status=null,rating=null ]";
+		//@SuppressWarnings()
+		String getResult = controller.queryUserName(PARTICIPANT_KEY); 
+		//String getResult = participantDao.getUser(PARTICIPANT_KEY); 
+		assertEquals(PARTICIPANT_KEY, getResult);
 	}
 
 	@Test
 	public void testParticipantQueryNotFound() {
 		assertEquals(controller.queryUser(NONEXISTING_KEY), "Not Found");
 	}
-	// @Test
-	// public void testJourneyQueryFound() {
-	// assertEquals();
-	// }
+
 
 }

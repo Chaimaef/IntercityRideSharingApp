@@ -46,7 +46,7 @@ public class User {
 		return this.role;
 	}
 
-	public String toString() {
+	public String userToString() {
 		return "User [id=" + id + ", userName #" + name + "# userRole=" + role + ",status=" + Status + ",rating="
 				+ rating + " ]";
 	}

@@ -59,9 +59,19 @@ public class intercityRideSharingSystemRepository {
 		List<User> users = findUserWithName(name);
 		String userlist = "";
 		for (User u : users) {
-			userlist += u.toString() + "<br>";
+			userlist += u.userToString();
 		}
 		return userlist;
+	}
+	@Transactional
+	public User getUserbyName(String name) {
+		List<User> users = findUserWithName(name);
+		for (User u : users) {
+			if ((u.getName()).equals(name)){
+				return u;
+			}
+		}
+		return null; 
 	}
 
 	@Transactional

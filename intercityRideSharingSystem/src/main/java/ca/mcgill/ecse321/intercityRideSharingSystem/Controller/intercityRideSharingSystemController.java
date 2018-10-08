@@ -48,7 +48,14 @@ public class intercityRideSharingSystemController {
 		}
 		return user;
 	}
-
+	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
+	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {
+		User u = repository.getUserbyName(name);
+		if (u == null) {
+			return "Not Found";
+		}
+		return u.getName();
+	}
 	@RequestMapping(value = "/createj", method = { RequestMethod.POST, RequestMethod.GET })
 	public String createJourney(@RequestParam(value = "time", defaultValue = "now") String startTime,
 			@RequestParam(value = "stops", defaultValue = "-1000") String stops,
