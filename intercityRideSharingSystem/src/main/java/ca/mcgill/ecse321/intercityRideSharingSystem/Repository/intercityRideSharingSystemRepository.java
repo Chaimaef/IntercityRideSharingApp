@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Passenger;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Administrator;
@@ -23,7 +25,7 @@ public class intercityRideSharingSystemRepository {
 	EntityManager entityManager;
 
 	@Transactional
-	public User createUser(String name, String role) {
+	public User createUser(String name, String role,Status status,Rating rating) {
 		User u = new User();
 		u.setName(name);
 		u.setRole(role);
@@ -32,12 +34,16 @@ public class intercityRideSharingSystemRepository {
 		   Passenger p = new Passenger(); 
 		   p.setName(name);
 		   p.setPassengerId(u.getId());
+		   p.setStatus(status);
+		   p.setRating(rating);
 		   entityManager.persist(p);
 		}
 		else if(role.equals("Driver")){
 			Driver d = new Driver(); 
 			d.setName(name);
 			d.setId(u.getId());
+			d.setStatus(status);
+			d.setRating(rating);
 			entityManager.persist(d);
 		 }
 		else{

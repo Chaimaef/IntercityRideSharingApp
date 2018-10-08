@@ -8,9 +8,10 @@ import javax.persistence.GenerationType;
 @Entity
 @Table(name="Userst04")
 public class User{
+private Rating rating;
+private Status Status;
 private String name;
 private String role;
-
 public void setName(String value) {
     this.name = value;
     }
@@ -40,6 +41,25 @@ public String getRole() {
         }
 
 public String toString() {
-            return "User [id=" + id + ", userName #" + name + "# userRole=" + role + "]";
+            return "User [id=" + id + ", userName #" + name + "# userRole=" + role + ",status="+Status + ",rating="+rating+" ]";
           }
+public enum Status{
+	inAJourney,idling
+}
+public enum Rating{
+	filler,one,two,three,four,five
+}
+public void setStatus(Status status) {
+	this.Status=status;
+}
+public Rating getRating(){
+	return this.rating;
+}
+public void setRating(Rating rating) {
+	this.rating=rating;
+}
+public Status getStatus(){
+	return this.Status;
+}
+
    }
