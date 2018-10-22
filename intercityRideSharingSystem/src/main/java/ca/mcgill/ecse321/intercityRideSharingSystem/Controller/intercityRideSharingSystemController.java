@@ -31,6 +31,12 @@ public class intercityRideSharingSystemController {
 		return "Hello world!";
 	}
 
+	@RequestMapping("/user/{name}/{role}/{status}/{rating}")
+	public Integer createUser(@PathVariable("name") String name, @PathVariable("role") String role, @PathVariable("status") Status status, @PathVariable("rating") Rating rating) {
+		User u = repository.createUser(name, role, status, rating);
+		return u.getId();
+	}
+	/*
 	@RequestMapping(value = "/user", method = { RequestMethod.POST, RequestMethod.GET })
 	public Integer createUser(@RequestParam(value = "name", defaultValue = "John") String name,
 			@RequestParam(value = "role", defaultValue = "Driver") String role,
@@ -38,7 +44,7 @@ public class intercityRideSharingSystemController {
 			@RequestParam(value = "rating", defaultValue = "five") Rating rating) {
 		User u = repository.createUser(name, role, status, rating);
 		return u.getId();
-	}
+	}*/
 
 	@RequestMapping(value = "/userg", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUser(@RequestParam(value = "name", defaultValue = "-1000") String name) {
@@ -56,19 +62,31 @@ public class intercityRideSharingSystemController {
 		}
 		return u.getName();
 	}
-	@RequestMapping(value = "/createj", method = { RequestMethod.POST, RequestMethod.GET })
-	public String createJourney(@RequestParam(value = "time", defaultValue = "now") String startTime,
-			@RequestParam(value = "stops", defaultValue = "-1000") String stops,
-			@RequestParam(value = "price", defaultValue = "-1000") String prices,
-			@RequestParam(value = "vehicle", defaultValue = "-1000") String vehicleType,
-			@RequestParam(value = "availableSeating", defaultValue = "-1000") String availableSeating,
-			@RequestParam(value = "driver", defaultValue = "nobody") String drivers) {
-		if (startTime.equals("now")) {
-			startTime = strDate;
+
+	@RequestMapping("/createj/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
+	public String createJourney(@PathVariable("time") String time, @PathVariable("stops") String stops, 
+	                            @PathVariable("price") String price,@PathVariable("vehicle") String vehicle, 
+	                            @PathVariable("availableSeating") String availableSeating, @PathVariable("driver") String driver) {
+		if (time.equals("now")) {
+			time = strDate;
 		}
-		Journey journey = repository.createJourney(startTime, stops, prices, vehicleType, availableSeating, drivers);
+		Journey journey = repository.createJourney(time, stops, price, vehicle, availableSeating, driver);
 		return ("Created journey " + journey.toString());
 	}
+
+	// @RequestMapping(value = "/createj", method = { RequestMethod.POST, RequestMethod.GET })
+	// public String createJourney(@RequestParam(value = "time", defaultValue = "now") String startTime,
+	// 		@RequestParam(value = "stops", defaultValue = "-1000") String stops,
+	// 		@RequestParam(value = "price", defaultValue = "-1000") String prices,
+	// 		@RequestParam(value = "vehicle", defaultValue = "-1000") String vehicleType,
+	// 		@RequestParam(value = "availableSeating", defaultValue = "-1000") String availableSeating,
+	// 		@RequestParam(value = "driver", defaultValue = "nobody") String drivers) {
+	// 	if (startTime.equals("now")) {
+	// 		startTime = strDate;
+	// 	}
+	// 	Journey journey = repository.createJourney(startTime, stops, prices, vehicleType, availableSeating, drivers);
+	// 	return ("Created journey " + journey.toString());
+	// }
 
 	@RequestMapping(value = "/journeyg", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryJourney(@RequestParam(value = "stop", defaultValue = "montreal") String stop) {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        app:srcCompat="@drawable/mcgill_logo"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to intercityRideSharingSystem!"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Are you a : "
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/buttonAdmin"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose"
+        android:layout_marginTop="20dp"
+        android:text="Administrator"
+        android:textSize="20sp"
+        android:clickable="true"
+        android:background="@drawable/round_button" />
+    <Button
+        android:id="@+id/buttonDriver"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdmin"
+        android:layout_marginTop="20dp"
+        android:text="Driver"
+        android:textSize="20sp"
+        android:clickable="true"
+        android:background="@drawable/round_button" />
+    <Button
+        android:id="@+id/buttonPassenger"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDriver"
+        android:layout_marginTop="20dp"
+        android:text="Passenger"
+        android:textSize="20sp"
+        android:clickable="true"
+        android:background="@drawable/round_button" />
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+
