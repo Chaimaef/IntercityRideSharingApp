@@ -55,16 +55,17 @@ public class driverActivity extends AppCompatActivity {
                 String vehicleMessage = vehicle.getText().toString();
                 String seatingMessage = seating.getText().toString();
                 String driverMessage = driver.getText().toString();
-                HttpUtils.post("creatj/" + timeMessage +"/" +  stopMessage +"/" + priceMessage +"/" + vehicleMessage +"/" + seatingMessage +"/" + driverMessage, new RequestParams(), new JsonHttpResponseHandler() {
+                HttpUtils.get("createj/" + timeMessage +"/" +  stopMessage +"/" + priceMessage +"/" + vehicleMessage +"/" + seatingMessage +"/" + driverMessage, new RequestParams(), new JsonHttpResponseHandler() {
                     @Override
                     public void onFinish() {
-//                        time.setText("");
-//                        stops.setText("");
-//                        price.setText("");
-//                        vehicle.setText("");
-//                        seating.setText("");
-//                        driver.setText("");
+                        super.onFinish();
                     }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        super.onSuccess(statusCode, headers, response);
+                    }
+
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         //super.onFailure(statusCode, headers, throwable, errorResponse);

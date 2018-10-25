@@ -5,8 +5,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class HttpUtils {
-    public static final String DEFAULT_BASE_URL = "https://t04-backend.herokuapp.com/";
-
+   //public static final String DEFAULT_BASE_URL = "https://t04-backend.herokuapp.com/";
+   public static final String DEFAULT_BASE_URL = "http://10.0.2.2:8080/";
     private static String baseUrl;
     private static AsyncHttpClient client = new AsyncHttpClient();
     //final int DEFAULT_TIMEOUT = 20 * 1000;

@@ -45,9 +45,9 @@ public class intercityRideSharingSystemController {
 		User u = repository.createUser(name, role, status, rating);
 		return u.getId();
 	}*/
-
-	@RequestMapping(value = "/userg", method = { RequestMethod.POST, RequestMethod.GET })
-	public String queryUser(@RequestParam(value = "name", defaultValue = "-1000") String name) {
+   
+	@RequestMapping("/userg/{name}")
+	public String queryUser(@PathVariable("name") String name) {
 		String user = repository.getUser(name);
 		if (user == null) {
 			return "Not Found";
@@ -73,6 +73,9 @@ public class intercityRideSharingSystemController {
 		Journey journey = repository.createJourney(time, stops, price, vehicle, availableSeating, driver);
 		return ("Created journey " + journey.toString());
 	}
+
+
+
 
 	// @RequestMapping(value = "/createj", method = { RequestMethod.POST, RequestMethod.GET })
 	// public String createJourney(@RequestParam(value = "time", defaultValue = "now") String startTime,

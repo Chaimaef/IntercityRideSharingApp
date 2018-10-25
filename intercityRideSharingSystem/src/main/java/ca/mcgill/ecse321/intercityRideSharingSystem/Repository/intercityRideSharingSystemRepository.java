@@ -87,6 +87,7 @@ public class intercityRideSharingSystemRepository {
 		entityManager.persist(journey);
 		return journey;
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List<User> findUserWithName(String name) {
