@@ -91,14 +91,24 @@ public class intercityRideSharingSystemController {
 	// 	return ("Created journey " + journey.toString());
 	// }
 
-	@RequestMapping(value = "/journeyg", method = { RequestMethod.POST, RequestMethod.GET })
-	public String queryJourney(@RequestParam(value = "stop", defaultValue = "montreal") String stop) {
+	@RequestMapping("/journeyg/{stop}")
+	public String queryJourney(@PathVariable("stop") String stop) {
 		String journeyFound = repository.getJourney(stop);
 		if (journeyFound == null) {
 			return "Not Found";
 		}
 		return journeyFound;
 	}
+
+
+	// @RequestMapping(value = "/journeyg", method = { RequestMethod.POST, RequestMethod.GET })
+	// public String queryJourney(@RequestParam(value = "stop", defaultValue = "montreal") String stop) {
+	// 	String journeyFound = repository.getJourney(stop);
+	// 	if (journeyFound == null) {
+	// 		return "Not Found";
+	// 	}
+	// 	return journeyFound;
+	// }
 	@RequestMapping(value = "/checks", method = {RequestMethod.POST, RequestMethod.GET})
 	public String checkUserStatus(@RequestParam(value="name", defaultValue="John") String username) {
 		String userstatus = repository.getUserStatus(username); 

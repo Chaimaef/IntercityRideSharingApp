@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.intercityridesharingsystem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 public class HttpUtils {
    //public static final String DEFAULT_BASE_URL = "https://t04-backend.herokuapp.com/";
@@ -24,8 +25,8 @@ public class HttpUtils {
         HttpUtils.baseUrl = baseUrl;
     }
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
+    public static void get(String url, RequestParams params, TextHttpResponseHandler response) {
+        client.get(getAbsoluteUrl(url), params, response);
     }
   
 
