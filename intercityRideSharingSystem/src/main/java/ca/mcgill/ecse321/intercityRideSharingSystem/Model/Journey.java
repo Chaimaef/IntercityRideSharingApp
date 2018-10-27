@@ -19,6 +19,7 @@ public class Journey {
 	private String vehicleType;
 	private String availableSeating;
 	private String price;
+	private String journeyStatus;
 
 	@Id
 	@Column(name = "journeyId", updatable = false)
@@ -104,6 +105,16 @@ public class Journey {
 	@Column(name = "journeyAvailableSeating", updatable = true)
 	public String getAvailableSeating() {
 		return this.availableSeating;
+	}
+	@Id
+	@Column(name = "journey_status", updatable = true)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public String getJourneyStatus() {
+		return journeyStatus;
+	}
+
+	public void setJourneyStatus(String status) {
+		this.journeyStatus = status;
 	}
 
 	public String toString() {
