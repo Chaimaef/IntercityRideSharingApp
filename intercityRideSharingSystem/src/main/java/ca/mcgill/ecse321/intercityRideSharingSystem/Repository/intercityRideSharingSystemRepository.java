@@ -108,17 +108,51 @@ public class intercityRideSharingSystemRepository {
 				.getResultList();
 	}
 
-	// @Transactional
-	// public String getJourney(String stops) {
-	// 	List<Journey> journeys = findJourneyWithStop(stops);
-	// 	String journeylist = "";
-	// 	for (Journey j : journeys) {
-	// 		journeylist += j.toString() + "<br>";
-	// 	}
-	// 	// User user = entityManager.find(User.class, Integer.parseInt(id));
-	// 	return journeylist;
-	// }
+	@SuppressWarnings("unchecked")
+	public List<Journey> findJourneyWithDriver(String driver) {
+		return (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j WHERE j.driver = :driver")
+				 .setParameter("driver", driver)
+				// .setMaxResults(20)
+				.getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Journey> findJourneyWithID(Integer id) {
+		return (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j WHERE j.journeyId = :id")
+				 .setParameter("id", id)
+				// .setMaxResults(20)
+				.getResultList();
+	}
 
+	@Transactional
+	public String getJourneyWithDriver(String driver) {
+		List<Journey> journeys = findJourneyWithDriver(driver);
+		String journeylist = "";
+		for (Journey j : journeys) {
+			journeylist += j.toString() + "<br>";
+		}
+		// User user = entityManager.find(User.class, Integer.parseInt(id));
+		return journeylist;
+	}
+
+    @Transactional
+	public String updateJourneyWithID(String id, String startTime, String stops, String price, String vehicleType,
+	String avilableSeating, String driver) {
+		int target = Integer.parseInt(id); 
+		List<Journey> journeys = findJourneyWithID(target);
+		String journeylist = "";
+		for (Journey j : journeys) {
+			j.setStartTime(startTime);
+		    j.setStop(stops);
+		    j.setPrice(price);
+		    j.setVehicleType(vehicleType);
+		    j.setAvailableSeating(avilableSeating);
+		    j.setDriver(driver);
+		    entityManager.persist(j);
+			journeylist += j.toString() + "<br>";
+		}
+		// User user = entityManager.find(User.class, Integer.parseInt(id));
+		return journeylist;
+	}
 	@Transactional
 	public String getJourney(String start, String destination) {
 		List<Journey> journeys = findJourneyWithStop(start);

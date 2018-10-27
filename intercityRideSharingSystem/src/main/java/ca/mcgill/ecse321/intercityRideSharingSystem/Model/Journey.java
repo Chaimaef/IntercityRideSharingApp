@@ -21,7 +21,7 @@ public class Journey {
 	private String price;
 
 	@Id
-	@Column(name = "journeyId")
+	@Column(name = "journeyId", updatable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getJourneyId() {
 		return journeyId;
@@ -35,7 +35,7 @@ public class Journey {
 		this.startTime = value;
 	}
 
-	@Column(name = "journeyStartTime")
+	@Column(name = "journeyStartTime", updatable = true)
 	public String getStartTime() {
 		return this.startTime;
 	}
@@ -44,7 +44,7 @@ public class Journey {
 	private String stop;
 
 	// @ManyToMany
-	@Column(name = "journeyStops")
+	@Column(name = "journeyStops", updatable = true)
 	public String getStop() {
 		return this.stop;
 	}
@@ -53,7 +53,7 @@ public class Journey {
 		this.stop = stops;
 	}
 
-	@Column(name = "prices")
+	@Column(name = "prices", updatable = true)
 	public String getPrice() {
 		return this.price;
 	}
@@ -66,7 +66,7 @@ public class Journey {
 	private String driver;
 
 	// @ManyToMany(mappedBy="journey")
-	@Column(name = "journey_driver")
+	@Column(name = "journey_driver", updatable = true)
 	public String getDriver() {
 		return this.driver;
 	}
@@ -79,7 +79,7 @@ public class Journey {
 	private String passenger;
 
 	// @ManyToMany(mappedBy="journey")
-	@Column(name = "journeyPassengers")
+	@Column(name = "journeyPassengers", updatable = true)
 	public String getPassenger() {
 		return this.passenger;
 	}
@@ -92,7 +92,7 @@ public class Journey {
 		this.vehicleType = value;
 	}
 
-	@Column(name = "journeyVehicleType")
+	@Column(name = "journeyVehicleType", updatable = true)
 	public String getVehicleType() {
 		return this.vehicleType;
 	}
@@ -101,7 +101,7 @@ public class Journey {
 		this.availableSeating = value;
 	}
 
-	@Column(name = "journeyAvailableSeating")
+	@Column(name = "journeyAvailableSeating", updatable = true)
 	public String getAvailableSeating() {
 		return this.availableSeating;
 	}

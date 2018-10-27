@@ -75,14 +75,27 @@ public class intercityRideSharingSystemController {
 	}
 
 
-	// @RequestMapping("/journeyg/{stop}")
-	// public String queryJourney(@PathVariable("stop") String stop) {
-	// 	String journeyFound = repository.getJourney(stop);
-	// 	if (journeyFound == null) {
-	// 		return "Not Found";
-	// 	}
-	// 	return journeyFound;
-	// }
+	@RequestMapping("/journeyd/{driver}")
+	public String queryJourney(@PathVariable("driver") String driver) {
+		String journeyFound = repository.getJourneyWithDriver(driver);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
+
+	@RequestMapping("/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
+	public String updateJourneywithID(@PathVariable("id") String id, 
+	                            @PathVariable("time") String time, @PathVariable("stops") String stops, 
+	                            @PathVariable("price") String price,@PathVariable("vehicle") String vehicle, 
+	                            @PathVariable("availableSeating") String availableSeating, @PathVariable("driver") String driver) {
+		String journeyFound = repository.updateJourneyWithID(id, time, stops, price, vehicle, availableSeating, driver);
+		if (journeyFound == null) {
+			return "Updated journey not found";
+		}
+		return "Journey being updated" + journeyFound;
+	}
+
 
 	@RequestMapping("/journeyg/{start}/{destination}")
 	public String queryJourney(@PathVariable("start") String start, @PathVariable("destination") String destination) {
