@@ -75,7 +75,7 @@ public class passengerActivity extends AppCompatActivity {
                               journey.setTextColor(Color.parseColor("#000000"));
                               journey.setTextSize(20);
                               journeyList.addView(journey);
-                              Log.d("first user id is ", j);
+//                              Log.d("first user id is ", j);
                           }
 
                     }

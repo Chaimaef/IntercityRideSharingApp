@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.List;
 import java.util.Collection;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.Arrays; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -78,9 +80,10 @@ public class intercityRideSharingSystemRepository {
 	public Journey createJourney(String startTime, String stops, String price, String vehicleType,
 			String avilableSeating, String driver) {
 		Journey journey = new Journey();
+		String finalPrice = "0_"+price; 
 		journey.setStartTime(startTime);
 		journey.setStop(stops);
-		journey.setPrice(price);
+		journey.setPrice(finalPrice);
 		journey.setVehicleType(vehicleType);
 		journey.setAvailableSeating(avilableSeating);
 		journey.setDriver(driver);
@@ -105,11 +108,43 @@ public class intercityRideSharingSystemRepository {
 				.getResultList();
 	}
 
+	// @Transactional
+	// public String getJourney(String stops) {
+	// 	List<Journey> journeys = findJourneyWithStop(stops);
+	// 	String journeylist = "";
+	// 	for (Journey j : journeys) {
+	// 		journeylist += j.toString() + "<br>";
+	// 	}
+	// 	// User user = entityManager.find(User.class, Integer.parseInt(id));
+	// 	return journeylist;
+	// }
+
 	@Transactional
-	public String getJourney(String stops) {
-		List<Journey> journeys = findJourneyWithStop(stops);
+	public String getJourney(String start, String destination) {
+		List<Journey> journeys = findJourneyWithStop(start);
+		List<Journey> journeyd = findJourneyWithStop(destination);
+		List<Journey> resultJourney = new ArrayList<Journey>(); 
+		List<Journey> finalresultJourney = new ArrayList<Journey>(); 
+		for(Journey s : journeys){
+			for (Journey d: journeyd ){
+				if(s.getJourneyId() == d.getJourneyId()){
+					int i = 0; 
+					resultJourney.add(i, d);
+					i ++; 
+				}
+			}
+		}
+		for(Journey r : resultJourney){
+			String allStops = r.getStop(); 
+			List<String> stops = Arrays.asList(allStops.split("\\s*_\\s*"));
+			if (stops.indexOf(start) < stops.indexOf(destination)){
+				int i = 0; 
+				finalresultJourney.add(i, r);
+				i ++; 
+			}
+		}
 		String journeylist = "";
-		for (Journey j : journeys) {
+		for (Journey j : finalresultJourney) {
 			journeylist += j.toString() + "<br>";
 		}
 		// User user = entityManager.find(User.class, Integer.parseInt(id));

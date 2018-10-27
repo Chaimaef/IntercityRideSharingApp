@@ -75,25 +75,18 @@ public class intercityRideSharingSystemController {
 	}
 
 
-
-
-	// @RequestMapping(value = "/createj", method = { RequestMethod.POST, RequestMethod.GET })
-	// public String createJourney(@RequestParam(value = "time", defaultValue = "now") String startTime,
-	// 		@RequestParam(value = "stops", defaultValue = "-1000") String stops,
-	// 		@RequestParam(value = "price", defaultValue = "-1000") String prices,
-	// 		@RequestParam(value = "vehicle", defaultValue = "-1000") String vehicleType,
-	// 		@RequestParam(value = "availableSeating", defaultValue = "-1000") String availableSeating,
-	// 		@RequestParam(value = "driver", defaultValue = "nobody") String drivers) {
-	// 	if (startTime.equals("now")) {
-	// 		startTime = strDate;
+	// @RequestMapping("/journeyg/{stop}")
+	// public String queryJourney(@PathVariable("stop") String stop) {
+	// 	String journeyFound = repository.getJourney(stop);
+	// 	if (journeyFound == null) {
+	// 		return "Not Found";
 	// 	}
-	// 	Journey journey = repository.createJourney(startTime, stops, prices, vehicleType, availableSeating, drivers);
-	// 	return ("Created journey " + journey.toString());
+	// 	return journeyFound;
 	// }
 
-	@RequestMapping("/journeyg/{stop}")
-	public String queryJourney(@PathVariable("stop") String stop) {
-		String journeyFound = repository.getJourney(stop);
+	@RequestMapping("/journeyg/{start}/{destination}")
+	public String queryJourney(@PathVariable("start") String start, @PathVariable("destination") String destination) {
+		String journeyFound = repository.getJourney(start, destination);
 		if (journeyFound == null) {
 			return "Not Found";
 		}

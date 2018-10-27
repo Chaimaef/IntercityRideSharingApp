@@ -108,7 +108,7 @@ public class Journey {
 
 	public String toString() {
 		return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType
-				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price" + price
+				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price=" + price
 				+ ", drivers=" + driver + "]";
 	}
 
