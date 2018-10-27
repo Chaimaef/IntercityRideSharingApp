@@ -106,6 +106,34 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	@RequestMapping("/availableSeating/{availableSeating}")
+	public String queryJourneyWithAvailableSeating(
+			@PathVariable("availableSeating") String availableSeating) {
+		String journeyFound = repository.getJourneyWithAvailableSeating(availableSeating);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
+	
+	@RequestMapping("/carType/{carType}")
+	public String queryJourneyWithCarType(@PathVariable("carType") String carType) {
+		String journeyFound = repository.getJourneyWithCarType(carType);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
+	
+//	@RequestMapping("/date/{date}")
+//	public String queryJourneyWithDate(@PathVariable("date") String date) {
+//		String journeyFound = repository.getJourneyWithDate(date);
+//		if (journeyFound == null) {
+//			return "Not Found";
+//		}
+//		return journeyFound;
+//	}
+
 
 	// @RequestMapping(value = "/journeyg", method = { RequestMethod.POST, RequestMethod.GET })
 	// public String queryJourney(@RequestParam(value = "stop", defaultValue = "montreal") String stop) {

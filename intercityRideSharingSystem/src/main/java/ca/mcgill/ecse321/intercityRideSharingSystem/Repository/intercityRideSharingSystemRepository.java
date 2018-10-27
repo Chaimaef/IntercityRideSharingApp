@@ -153,6 +153,104 @@ public class intercityRideSharingSystemRepository {
 		// User user = entityManager.find(User.class, Integer.parseInt(id));
 		return journeylist;
 	}
+    
+    
+//	@SuppressWarnings("unchecked")
+//	public List<Journey> findJourneyWithDate(String date) {
+//		Date date1 = null;
+//		int i = 0;
+//		try {
+//			date1 = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+//			System.out.println(date1);
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		List<Journey> journeys = (List<Journey>) entityManager
+//				.createQuery("SELECT j FROM Journey j WHERE strpos(j.startTime, :date) > 0").setParameter("date", date)
+//				.getResultList();
+//		List<Journey> wantedJourneys = new ArrayList();
+//		for (Journey journey : journeys) {
+//			Date date2 = null;
+//			try {
+//				date2 = new SimpleDateFormat("dd-MM-yyyy").parse(
+//						(String) entityManager.createQuery("SELECT startTime FROM Journey j").getResultList().get(i));
+//			} catch (ParseException e) {
+//				e.printStackTrace();
+//			}
+//			if (date2.before(date1)) {
+//				wantedJourneys.add(journey);
+//			}
+//			i++;
+//		}
+//
+//		return wantedJourneys;
+//	}
+
+	@SuppressWarnings("unchecked")
+	public List<Journey> findJourneyWithCarType(String carType) {
+		return (List<Journey>) entityManager
+				.createQuery("SELECT j FROM Journey j WHERE strpos(j.vehicleType, :carType)>0")
+				.setParameter("carType", carType).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Journey> findJourneyWithAvailableSeating(String wantedSeating) {
+		Integer Seating = Integer.parseInt(wantedSeating);
+		int i = 0;
+		List<Journey> wantedJourneys = new ArrayList();
+		List<Journey> journeys = (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j").getResultList();
+		for (Journey journey : journeys) {
+			List temp = entityManager.createQuery("SELECT journey.availableSeating FROM Journey journey")
+					.getResultList();
+			int availableSeating = Integer.parseInt((String) temp.get(i));
+			i++;
+			if (availableSeating >= Seating) {
+				wantedJourneys.add(journey);
+			}
+		}
+		return wantedJourneys;
+	}
+
+	@Transactional
+	public String getJourneyWithStop(String stops) {
+		List<Journey> journeys = findJourneyWithStop(stops);
+		String journeylist = "";
+		for (Journey j : journeys) {
+			journeylist += j.toString() + "<br>";
+		}
+		return journeylist;
+	}
+
+//	@Transactional
+//	public String getJourneyWithDate(String date) {
+//		List<Journey> journeys = findJourneyWithDate(date);
+//		String journeylist = "";
+//		for (Journey j : journeys) {
+//			journeylist += j.toString() + "<br>";
+//		}
+//		return journeylist;
+//	}
+
+	@Transactional
+	public String getJourneyWithAvailableSeating(String availableSeating) {
+		List<Journey> journeys = findJourneyWithAvailableSeating(availableSeating);
+		String journeylist = "";
+		for (Journey j : journeys) {
+			journeylist += j.toString() + "<br>";
+		}
+		return journeylist;
+	}
+
+	@Transactional
+	public String getJourneyWithCarType(String carType) {
+		List<Journey> journeys = findJourneyWithCarType(carType);
+		String journeylist = "";
+		for (Journey j : journeys) {
+			journeylist += j.toString() + "<br>";
+		}
+		return journeylist;
+	}
 	@Transactional
 	public String getJourney(String start, String destination) {
 		List<Journey> journeys = findJourneyWithStop(start);
