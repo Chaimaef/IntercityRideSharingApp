@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
+
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -14,12 +16,13 @@ import javax.persistence.ManyToOne;
 @Entity
 @Table(name = "Journeyt04")
 public class Journey {
+	private Status Status;
 	private String startTime;
 	private int journeyId;
 	private String vehicleType;
 	private String availableSeating;
 	private String price;
-	private String journeyStatus;
+	//private String journeyStatus;
 
 	@Id
 	@Column(name = "journeyId", updatable = false)
@@ -27,13 +30,16 @@ public class Journey {
 	public int getJourneyId() {
 		return journeyId;
 	}
-
 	public void setJourneyId(int journeyId) {
 		this.journeyId = journeyId;
 	}
 
 	public void setStartTime(String value) {
 		this.startTime = value;
+	}
+		
+	public enum Status {
+		active,closed
 	}
 
 	@Column(name = "journeyStartTime", updatable = true)
@@ -109,12 +115,12 @@ public class Journey {
 	@Id
 	@Column(name = "journey_status", updatable = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public String getJourneyStatus() {
-		return journeyStatus;
+	public Status getJourneyStatus() {
+		return this.Status;
 	}
 
-	public void setJourneyStatus(String status) {
-		this.journeyStatus = status;
+	public void setJourneyStatus(Status status) {
+		this.Status = status;
 	}
 
 	public String toString() {
