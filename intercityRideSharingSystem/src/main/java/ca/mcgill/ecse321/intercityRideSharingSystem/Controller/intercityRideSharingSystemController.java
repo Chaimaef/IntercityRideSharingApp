@@ -124,6 +124,18 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
+	//String start, String destination, String carType, String price, String seating, String date
+	@RequestMapping("/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}")
+	public String sortJourney(@PathVariable("start") String start, 
+	                            @PathVariable("destination") String destination, @PathVariable("carType") String carType, 
+	                            @PathVariable("price") String price,@PathVariable("seating") String seating, 
+	                            @PathVariable("date") String date) {
+		String journeyFound = repository.sortJourney(start, destination, carType, price, seating, date);
+		if (journeyFound == null) {
+			return "journey not found";
+		}
+		return "sorted Journey found" + journeyFound;
+	}
 	
 //	@RequestMapping("/date/{date}")
 //	public String queryJourneyWithDate(@PathVariable("date") String date) {

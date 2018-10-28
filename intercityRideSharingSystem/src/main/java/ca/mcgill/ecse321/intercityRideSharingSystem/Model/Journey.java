@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+
 @Entity
 @Table(name = "Journeyt04")
 public class Journey {
@@ -112,7 +113,7 @@ public class Journey {
 	public String getAvailableSeating() {
 		return this.availableSeating;
 	}
-	@Id
+	
 	@Column(name = "journey_status", updatable = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Status getJourneyStatus() {

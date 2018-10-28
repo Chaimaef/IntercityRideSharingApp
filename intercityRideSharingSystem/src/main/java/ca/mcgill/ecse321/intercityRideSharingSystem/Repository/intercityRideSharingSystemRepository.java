@@ -7,6 +7,8 @@ import java.util.Collection;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Arrays; 
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -107,6 +109,21 @@ public class intercityRideSharingSystemRepository {
 				// .setMaxResults(20)
 				.getResultList();
 	}
+	// @SuppressWarnings("unchecked")
+	// public List<Journey> findJourneyWithPrice(String price) {
+	// 	return (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j WHERE  j.price <= :price")
+	// 			.setParameter("price", price)
+	// 			// .setMaxResults(20)
+	// 			.getResultList();
+	// }
+	// @SuppressWarnings("unchecked")
+	// public List<Journey> findJourneyWithDate(String stop) {
+	// 	return (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j WHERE strpos(j.stop, :stops) > 0")
+	// 			.setParameter("stops", stop)
+	// 			// .setMaxResults(20)
+	// 			.getResultList();
+	// }
+
 
 	@SuppressWarnings("unchecked")
 	public List<Journey> findJourneyWithDriver(String driver) {
@@ -290,5 +307,81 @@ public class intercityRideSharingSystemRepository {
 			  userstatus += u.statusToString()+ "<br>"; 
 		 }
 		 return userstatus; 
+	}
+	@Transactional
+	public String sortJourney(String start, String destination, String carType, String price, String seating, String date) {
+		List<Journey> journeys = findJourneyWithStop(start);
+		List<Journey> journeyd = findJourneyWithStop(destination);
+		List<Journey> journeyCar = findJourneyWithCarType(carType);
+		List<Journey> journeyseating = findJourneyWithAvailableSeating(seating);
+		List<Journey> resultJourney = new ArrayList<Journey>(); 
+		List<Journey> finalresultJourney = new ArrayList<Journey>(); 
+		List<Journey> sortedJourney = new ArrayList<Journey>(); 
+		List<Journey> finalsortedJourney = new ArrayList<Journey>(); 
+		for(Journey s : journeys){
+			for (Journey d: journeyd ){
+				if(s.getJourneyId() == d.getJourneyId()){
+					int i = 0; 
+					resultJourney.add(i, d);
+					i ++; 
+				}
+			}
+		}
+		for(Journey r : resultJourney){
+			String allStops = r.getStop(); 
+			List<String> stops = Arrays.asList(allStops.split("\\s*_\\s*"));
+			if (stops.indexOf(start) < stops.indexOf(destination)){
+				int i = 0; 
+				finalresultJourney.add(i, r);
+				i ++; 
+			}
+		}
+		for(Journey f : finalresultJourney){
+			for(Journey c: journeyCar ){
+				for(Journey s: journeyseating){
+					if(s.getJourneyId() == c.getJourneyId()&&c.getJourneyId() == f.getJourneyId()){}
+					int i = 0; 
+					sortedJourney.add(i, s);
+					i ++; 
+				}
+
+			}
+		}
+		int targetPrice = Integer.parseInt(price); 
+		SimpleDateFormat formatter=new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");  
+		
+		for(Journey journey : sortedJourney){
+			String allstops = journey.getStop(); 
+			List<String> stop = Arrays.asList(allstops.split("\\s*_\\s*"));
+			String prices = journey.getPrice(); 
+			List<String> allPrice = Arrays.asList(prices.split("\\s*_\\s*"));
+			int startIndex = stop.indexOf(start); 
+			int endIndex = stop.indexOf(destination); 
+			int realPrice = 0; 
+			for(int i = startIndex; i < (endIndex+1); i++){
+				realPrice+=Integer.parseInt(allPrice.get(i)); 
+			}
+			int timeDiff = 0; 
+			try {
+				Date finalDate=formatter.parse(date);  
+				Date realDate=formatter.parse(journey.getStartTime());  
+				timeDiff = finalDate.compareTo(realDate); 
+			} catch (Exception e) {
+				//TODO: handle exception
+				return e.getMessage(); 
+			}
+			if(realPrice <= targetPrice && timeDiff >= 0){
+				int j = 0; 
+					finalsortedJourney.add(j, journey);
+					j ++; 
+			}
+
+		}
+		String sortedjouneys = ""; 
+		 for (Journey result : finalsortedJourney){
+			sortedjouneys += result.toString()+ "<br>"; 
+		 }
+		 return sortedjouneys;
+
 	}
 }
