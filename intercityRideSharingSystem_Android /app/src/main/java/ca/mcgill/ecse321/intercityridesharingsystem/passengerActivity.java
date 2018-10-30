@@ -54,7 +54,7 @@ public class passengerActivity extends AppCompatActivity {
         final Context c = getApplicationContext();
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                HttpUtils.get("journeyg/montreal", new RequestParams(), new TextHttpResponseHandler() {
+                HttpUtils.get("journeyg/montreal/ottawa", new RequestParams(), new TextHttpResponseHandler() {
                     @Override
                     public void onFinish() {
                         super.onFinish();

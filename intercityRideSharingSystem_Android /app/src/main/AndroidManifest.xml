@@ -17,9 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".driverActivity">
+        <activity android:name=".createJourneyActivity">
         </activity>
         <activity android:name=".passengerActivity">
+        </activity>
+        <activity android:name=".modifyJourneyActivity">
+        </activity>
+        <activity android:name=".closeJourneyActivity">
         </activity>
     </application>
 

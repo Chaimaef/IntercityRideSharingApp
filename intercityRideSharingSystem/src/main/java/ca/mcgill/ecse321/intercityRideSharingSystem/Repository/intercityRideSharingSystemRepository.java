@@ -89,6 +89,8 @@ public class intercityRideSharingSystemRepository {
 		journey.setVehicleType(vehicleType);
 		journey.setAvailableSeating(avilableSeating);
 		journey.setDriver(driver);
+		ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status journeyStatus = ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active; 
+		journey.setJourneyStatus(journeyStatus); 
 		entityManager.persist(journey);
 		return journey;
 	}
@@ -139,6 +141,19 @@ public class intercityRideSharingSystemRepository {
 				// .setMaxResults(20)
 				.getResultList();
 	}
+    @Transactional
+	public String closeJourneyWithID(String id) {
+		List<Journey> journeys = findJourneyWithID(Integer.parseInt(id));
+		String journeylist = "";
+		for (Journey j : journeys) {
+			ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status journeyStatus = ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.closed; 
+		    j.setJourneyStatus(journeyStatus); 
+		    entityManager.persist(j);
+			journeylist += j.toString() + "<br>";
+		}
+		// User user = entityManager.find(User.class, Integer.parseInt(id));
+		return journeylist;
+	} 
 
 	@Transactional
 	public String getJourneyWithDriver(String driver) {

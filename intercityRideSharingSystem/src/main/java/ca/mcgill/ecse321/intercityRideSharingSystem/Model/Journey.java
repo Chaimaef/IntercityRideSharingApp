@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Table(name = "Journeyt04")
 public class Journey {
-	private Status Status;
+	private Status status;
 	private String startTime;
 	private int journeyId;
 	private String vehicleType;
@@ -117,17 +117,17 @@ public class Journey {
 	@Column(name = "journey_status", updatable = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Status getJourneyStatus() {
-		return this.Status;
+		return this.status;
 	}
 
 	public void setJourneyStatus(Status status) {
-		this.Status = status;
+		this.status = status;
 	}
 
 	public String toString() {
 		return "Journey [id=" + journeyId + ", startTime=" + startTime + ", vehicleType=" + vehicleType
 				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price=" + price
-				+ ", drivers=" + driver + "]";
+				+ ", drivers=" + driver + ", status=" + status + "]";
 	}
 
 }

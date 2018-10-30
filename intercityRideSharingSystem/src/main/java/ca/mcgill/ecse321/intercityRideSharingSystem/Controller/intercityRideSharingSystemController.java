@@ -84,6 +84,15 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	@RequestMapping("/journeyc/{id}")
+	public String closeJourney(@PathVariable("id") String id) {
+		String journeyFound = repository.closeJourneyWithID(id);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
+
 	@RequestMapping("/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
 	public String updateJourneywithID(@PathVariable("id") String id, 
 	                            @PathVariable("time") String time, @PathVariable("stops") String stops, 

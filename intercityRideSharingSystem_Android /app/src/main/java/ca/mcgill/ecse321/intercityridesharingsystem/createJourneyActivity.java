@@ -1,12 +1,10 @@
 package ca.mcgill.ecse321.intercityridesharingsystem;
 
-import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.view.View;
-import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,10 +14,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.ecse321.intercityridesharingsystem.R;
 import cz.msebera.android.httpclient.Header;
 
-public class driverActivity extends AppCompatActivity {
+public class createJourneyActivity extends AppCompatActivity {
     private String error = null;
     private void refreshErrorMessage() {
         // set the error message
@@ -35,9 +32,8 @@ public class driverActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //refreshErrorMessage();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver);
+        setContentView(R.layout.activity_create_journey);
         Button advertiseJourney = findViewById(R.id.buttonAdvertise);
         final EditText time = findViewById(R.id.startTime);
         final EditText stops = findViewById(R.id.stops);
@@ -45,7 +41,6 @@ public class driverActivity extends AppCompatActivity {
         final EditText vehicle = findViewById(R.id.vehicles);
         final EditText seating = findViewById(R.id.seatings);
         final EditText driver = findViewById(R.id.drivers);
-        //final TextView error = findViewById(R.id.error);
         advertiseJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //error = "";
@@ -59,11 +54,20 @@ public class driverActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         super.onFinish();
+                        time.setText("");
+                        stops.setText("");
+                        price.setText("");
+                        vehicle.setText("");
+                        seating.setText("");
+                        driver.setText("");
+                        error = "Journey created successfully";
+                        refreshErrorMessage();
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
+
                     }
 
                     @Override
@@ -74,7 +78,6 @@ public class driverActivity extends AppCompatActivity {
                             error += errorResponse.get("message").toString();
                         } catch (JSONException e) {
                            error += e.getMessage();
-                           Log.d("error", error);
                       }
                         refreshErrorMessage();
                     }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,24 +13,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //buttons on the first entry user interface
-        Button admin = findViewById(R.id.buttonAdmin);
-        Button driver = findViewById(R.id.buttonDriver);
-        Button passenger = findViewById(R.id.buttonPassenger);
+        Button create = findViewById(R.id.buttonCreate);
+        Button modify = findViewById(R.id.buttonModify);
+        Button close = findViewById(R.id.buttonClose);
         //click listener for buttons
-        admin.setOnClickListener(new View.OnClickListener() {
+        create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.activity_admin);
-            }
-        });
-        driver.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, driverActivity.class);
+                Intent intent = new Intent(MainActivity.this, createJourneyActivity.class);
                 startActivity(intent);
             }
         });
-        passenger.setOnClickListener(new View.OnClickListener() {
+        modify.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, passengerActivity.class);
+                Intent intent = new Intent(MainActivity.this, modifyJourneyActivity.class);
+                startActivity(intent);
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, closeJourneyActivity.class);
                 startActivity(intent);
             }
         });
