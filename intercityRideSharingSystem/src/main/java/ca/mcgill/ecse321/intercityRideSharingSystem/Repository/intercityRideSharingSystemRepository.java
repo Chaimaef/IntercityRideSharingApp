@@ -373,7 +373,7 @@ public class intercityRideSharingSystemRepository {
 			int startIndex = stop.indexOf(start); 
 			int endIndex = stop.indexOf(destination); 
 			int realPrice = 0; 
-			for(int i = startIndex; i < (endIndex+1); i++){
+			for(int i = startIndex; i < (endIndex); i++){
 				realPrice+=Integer.parseInt(allPrice.get(i)); 
 			}
 			int timeDiff = 0; 

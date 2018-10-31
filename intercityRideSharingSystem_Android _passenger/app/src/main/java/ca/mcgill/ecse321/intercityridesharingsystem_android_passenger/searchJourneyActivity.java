@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,20 +50,53 @@ public class searchJourneyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acivity_search_journey);
         Button allJourney = findViewById(R.id.journeys);
+        Button sortJourney = findViewById(R.id.sortedjourneys);
+        Button newSearch = findViewById(R.id.startnew);
         final LinearLayout journeyList = findViewById(R.id.jouneryLayout);
         final Context c = getApplicationContext();
+        final EditText start = findViewById(R.id.inputstart);
+        final EditText destination = findViewById(R.id.input);
+        final EditText cartype = findViewById(R.id.cartype);
+        final EditText price = findViewById(R.id.stopPrice);
+        final EditText seating = findViewById(R.id.seatings);
+        final EditText starttime = findViewById(R.id.time);
+
+        newSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                start.setText("");
+                destination.setText("");
+                cartype.setText("");
+                price.setText("");
+                seating.setText("");
+                starttime.setText("");
+                if((journeyList).getChildCount() > 0){
+                    (journeyList).removeAllViews();
+                }
+
+
+            }
+        });
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                HttpUtils.get("journeyd/sun", new RequestParams(), new TextHttpResponseHandler() {
+                String startCity = start.getText().toString();
+                String destinaitonCity = destination.getText().toString();
+                //"/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}"
+                HttpUtils.get("journeyg/" + startCity + "/" + destinaitonCity, new RequestParams(), new TextHttpResponseHandler() {
                     @Override
                     public void onFinish() {
                         super.onFinish();
+                        start.setText("");
+                        destination.setText("");
+                        cartype.setText("");
+                        price.setText("");
+                        seating.setText("");
+                        starttime.setText("");
+
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
-                        // super.onSuccess(statusCode, headers, response);
-
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
                         for(String j : journeys){
                             TextView journey = new TextView(c);
@@ -74,24 +108,66 @@ public class searchJourneyActivity extends AppCompatActivity {
                             journey.setTextColor(Color.parseColor("#000000"));
                             journey.setTextSize(20);
                             journeyList.addView(journey);
-//                              Log.d("first user id is ", j);
                         }
 
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
-                        //  super.onFailure(statusCode, headers, response, throwable);
-                        //String lines[] = String.split("\\r?\\n", -1);
-                        //try {
-
-                        //} catch (JSONException e) {
-                        //  error += e.getMessage();
                         Log.d("get method got an error", error+response);
-                        // }
                         refreshErrorMessage();
                     }
 
                 });
+            }
+        });
+
+        sortJourney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String startCity = start.getText().toString();
+                String destinaitonCity = destination.getText().toString();
+                String car = cartype.getText().toString();
+                String maxprice = price.getText().toString();
+                String seatings = seating.getText().toString();
+                String time = starttime.getText().toString();
+                //"/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}"
+                HttpUtils.get("journeysort/" + startCity + "/" + destinaitonCity + "/" + car + "/" + maxprice + "/" + seatings + "/" + time, new RequestParams(), new TextHttpResponseHandler() {
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        start.setText("");
+                        destination.setText("");
+                        cartype.setText("");
+                        price.setText("");
+                        seating.setText("");
+                        starttime.setText("");
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String response) {
+                        List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
+                        for(String j : journeys){
+                            TextView journey = new TextView(c);
+                            journey.setText(j);
+                            journey.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT));
+                            journey.setGravity(Gravity.CENTER);
+                            journey.setTextColor(Color.parseColor("#000000"));
+                            journey.setTextSize(20);
+                            journeyList.addView(journey);
+                        }
+
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
+                        Log.d("get method got an error", error+response);
+                        refreshErrorMessage();
+                    }
+
+                });
+
             }
         });
     }
