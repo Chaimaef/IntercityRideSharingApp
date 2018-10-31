@@ -154,6 +154,19 @@ public class intercityRideSharingSystemRepository {
 		// User user = entityManager.find(User.class, Integer.parseInt(id));
 		return journeylist;
 	} 
+    
+       @Transactional
+	public String joinJourneyWithID(String id, String passengers) {
+		List<Journey> journeys = findJourneyWithID(Integer.parseInt(id));
+		String journeylist = "";
+		for (Journey j : journeys) {
+			j.setPassenger(passengers); 
+		    entityManager.persist(j);
+			journeylist += j.toString() + "<br>";
+		}
+		// User user = entityManager.find(User.class, Integer.parseInt(id));
+		return journeylist;
+	} 
 
 	@Transactional
 	public String getJourneyWithDriver(String driver) {

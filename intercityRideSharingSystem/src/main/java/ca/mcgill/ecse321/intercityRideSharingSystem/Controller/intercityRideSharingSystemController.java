@@ -92,6 +92,14 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
+	@RequestMapping("/journeyp/{id}/{passenger}")
+	public String joinJourney(@PathVariable("id") String id,@PathVariable("passenger") String passenger) {
+		String journeyFound = repository.joinJourneyWithID(id, passenger);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound;
+	}
 
 	@RequestMapping("/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
 	public String updateJourneywithID(@PathVariable("id") String id, 

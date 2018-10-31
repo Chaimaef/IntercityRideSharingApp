@@ -98,8 +98,8 @@ public class searchJourneyActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
-                        for(String j : journeys){
-                            TextView journey = new TextView(c);
+                        for(final String j : journeys){
+                            final TextView journey = new TextView(c);
                             journey.setText(j);
                             journey.setLayoutParams(new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -108,6 +108,52 @@ public class searchJourneyActivity extends AppCompatActivity {
                             journey.setTextColor(Color.parseColor("#000000"));
                             journey.setTextSize(20);
                             journeyList.addView(journey);
+                            journey.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    setContentView(R.layout.activity_join_journey);
+                                    final TextView chosenJourney = findViewById(R.id.chosenJourney);
+                                    chosenJourney.setText(j);
+                                    Button join = findViewById(R.id.buttonJoin);
+                                    final EditText name = findViewById(R.id.passengerName);
+                                    join.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            String passengerName = name.getText().toString();
+                                            final String id =  j.substring((j.indexOf("=")+1), j.indexOf(","));
+                                            chosenJourney.setGravity(Gravity.CENTER);
+                                            HttpUtils.post("journeyp/" + id + "/" + passengerName, new RequestParams(), new JsonHttpResponseHandler() {
+                                                @Override
+                                                public void onFinish() {
+                                                    super.onFinish();
+                                                    error = "Journey joined successfully";
+                                                    refreshErrorMessage();
+                                                }
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                                    super.onSuccess(statusCode, headers, response);
+
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                                    //super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                                                    try {
+                                                        error += errorResponse.get("message").toString();
+                                                    } catch (JSONException e) {
+                                                        error += e.getMessage();
+                                                    }
+                                                    refreshErrorMessage();
+                                                }
+
+                                            });
+
+                                        }
+                                    });
+                                }
+                            });
                         }
 
                     }
@@ -147,7 +193,7 @@ public class searchJourneyActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
-                        for(String j : journeys){
+                        for(final String j : journeys){
                             TextView journey = new TextView(c);
                             journey.setText(j);
                             journey.setLayoutParams(new LinearLayout.LayoutParams(
@@ -157,6 +203,53 @@ public class searchJourneyActivity extends AppCompatActivity {
                             journey.setTextColor(Color.parseColor("#000000"));
                             journey.setTextSize(20);
                             journeyList.addView(journey);
+                            journey.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    setContentView(R.layout.activity_join_journey);
+                                    final TextView chosenJourney = findViewById(R.id.chosenJourney);
+                                    chosenJourney.setText(j);
+                                    Button join = findViewById(R.id.buttonJoin);
+                                    final EditText name = findViewById(R.id.passengerName);
+                                    join.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            String passengerName = name.getText().toString();
+                                            final String id =  j.substring((j.indexOf("=")+1), j.indexOf(","));
+                                            chosenJourney.setGravity(Gravity.CENTER);
+                                            HttpUtils.post("journeyp/" + id + "/" + passengerName, new RequestParams(), new JsonHttpResponseHandler() {
+                                                @Override
+                                                public void onFinish() {
+                                                    super.onFinish();
+                                                    error = "Journey joined successfully";
+                                                    refreshErrorMessage();
+                                                }
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                                    super.onSuccess(statusCode, headers, response);
+
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                                    //super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                                                    try {
+                                                        error += errorResponse.get("message").toString();
+                                                    } catch (JSONException e) {
+                                                        error += e.getMessage();
+                                                    }
+                                                    refreshErrorMessage();
+                                                }
+
+                                            });
+
+                                        }
+                                    });
+                                }
+                            });
+
                         }
 
                     }
