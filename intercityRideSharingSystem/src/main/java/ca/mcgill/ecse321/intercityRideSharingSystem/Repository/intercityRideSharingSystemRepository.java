@@ -160,7 +160,13 @@ public class intercityRideSharingSystemRepository {
 		List<Journey> journeys = findJourneyWithID(Integer.parseInt(id));
 		String journeylist = "";
 		for (Journey j : journeys) {
-			j.setPassenger(passengers); 
+			if(j.getPassenger()== null){
+                j.setPassenger(passengers); 
+			}
+			else{
+				j.setPassenger(j.getPassenger() + "_" + passengers); 
+			}
+			
 		    entityManager.persist(j);
 			journeylist += j.toString() + "<br>";
 		}
@@ -386,7 +392,7 @@ public class intercityRideSharingSystemRepository {
 			int startIndex = stop.indexOf(start); 
 			int endIndex = stop.indexOf(destination); 
 			int realPrice = 0; 
-			for(int i = startIndex; i < (endIndex); i++){
+			for(int i = startIndex; i < (endIndex + 1); i++){
 				realPrice+=Integer.parseInt(allPrice.get(i)); 
 			}
 			int timeDiff = 0; 
