@@ -19,7 +19,6 @@ public class Administrator {
 
 	@Id
 	@Column(name = "adminstratorid")
-	// @GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
 		return this.id;
 	}

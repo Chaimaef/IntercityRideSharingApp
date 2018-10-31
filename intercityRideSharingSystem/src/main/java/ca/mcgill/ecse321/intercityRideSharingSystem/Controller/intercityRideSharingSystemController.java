@@ -31,21 +31,17 @@ public class intercityRideSharingSystemController {
 		return "Hello world!";
 	}
 
+	// Method to get a user using all the available fields, it uses a method in
+	// repository which communicates with the database
 	@RequestMapping("/user/{name}/{role}/{status}/{rating}")
-	public Integer createUser(@PathVariable("name") String name, @PathVariable("role") String role, @PathVariable("status") Status status, @PathVariable("rating") Rating rating) {
+	public Integer createUser(@PathVariable("name") String name, @PathVariable("role") String role,
+			@PathVariable("status") Status status, @PathVariable("rating") Rating rating) {
 		User u = repository.createUser(name, role, status, rating);
 		return u.getId();
 	}
-	/*
-	@RequestMapping(value = "/user", method = { RequestMethod.POST, RequestMethod.GET })
-	public Integer createUser(@RequestParam(value = "name", defaultValue = "John") String name,
-			@RequestParam(value = "role", defaultValue = "Driver") String role,
-			@RequestParam(value = "status", defaultValue = "idling") Status status,
-			@RequestParam(value = "rating", defaultValue = "five") Rating rating) {
-		User u = repository.createUser(name, role, status, rating);
-		return u.getId();
-	}*/
-   
+
+	// Method to get a user using the name field only, it uses a method in
+	// repository which communicates with the database
 	@RequestMapping("/userg/{name}")
 	public String queryUser(@PathVariable("name") String name) {
 		String user = repository.getUser(name);
@@ -54,6 +50,7 @@ public class intercityRideSharingSystemController {
 		}
 		return user;
 	}
+
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {
 		User u = repository.getUserbyName(name);
@@ -63,10 +60,14 @@ public class intercityRideSharingSystemController {
 		return u.getName();
 	}
 
+	// Method to create a journey,(user has to fill in all the fields), it calls a
+	// method in repository
+	// which communicates with the database and inserts the data in the Journeyt04
+	// table;
 	@RequestMapping("/createj/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
-	public String createJourney(@PathVariable("time") String time, @PathVariable("stops") String stops, 
-	                            @PathVariable("price") String price,@PathVariable("vehicle") String vehicle, 
-	                            @PathVariable("availableSeating") String availableSeating, @PathVariable("driver") String driver) {
+	public String createJourney(@PathVariable("time") String time, @PathVariable("stops") String stops,
+			@PathVariable("price") String price, @PathVariable("vehicle") String vehicle,
+			@PathVariable("availableSeating") String availableSeating, @PathVariable("driver") String driver) {
 		if (time.equals("now")) {
 			time = strDate;
 		}
@@ -74,7 +75,7 @@ public class intercityRideSharingSystemController {
 		return ("Created journey " + journey.toString());
 	}
 
-
+	// Uses the driver's name to return the journeys with a matching driver
 	@RequestMapping("/journeyd/{driver}")
 	public String queryJourney(@PathVariable("driver") String driver) {
 		String journeyFound = repository.getJourneyWithDriver(driver);
@@ -84,6 +85,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	// Uses an id number, to return the journey with the corresponding id number
 	@RequestMapping("/journeyc/{id}")
 	public String closeJourney(@PathVariable("id") String id) {
 		String journeyFound = repository.closeJourneyWithID(id);
@@ -92,8 +94,10 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
+
+	// Method to add a passenger to a journey
 	@RequestMapping("/journeyp/{id}/{passenger}")
-	public String joinJourney(@PathVariable("id") String id,@PathVariable("passenger") String passenger) {
+	public String joinJourney(@PathVariable("id") String id, @PathVariable("passenger") String passenger) {
 		String journeyFound = repository.joinJourneyWithID(id, passenger);
 		if (journeyFound == null) {
 			return "Not Found";
@@ -101,11 +105,13 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	// Modifies a journey based on the new data entered by the user (all fields must
+	// be filled)
 	@RequestMapping("/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
-	public String updateJourneywithID(@PathVariable("id") String id, 
-	                            @PathVariable("time") String time, @PathVariable("stops") String stops, 
-	                            @PathVariable("price") String price,@PathVariable("vehicle") String vehicle, 
-	                            @PathVariable("availableSeating") String availableSeating, @PathVariable("driver") String driver) {
+	public String updateJourneywithID(@PathVariable("id") String id, @PathVariable("time") String time,
+			@PathVariable("stops") String stops, @PathVariable("price") String price,
+			@PathVariable("vehicle") String vehicle, @PathVariable("availableSeating") String availableSeating,
+			@PathVariable("driver") String driver) {
 		String journeyFound = repository.updateJourneyWithID(id, time, stops, price, vehicle, availableSeating, driver);
 		if (journeyFound == null) {
 			return "Updated journey not found";
@@ -113,7 +119,7 @@ public class intercityRideSharingSystemController {
 		return "Journey being updated" + journeyFound;
 	}
 
-
+	// Returns a journey with the corresponding start and destination
 	@RequestMapping("/journeyg/{start}/{destination}")
 	public String queryJourney(@PathVariable("start") String start, @PathVariable("destination") String destination) {
 		String journeyFound = repository.getJourney(start, destination);
@@ -123,16 +129,17 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	// Returns the journeys with available seating greater than the inputed seating
 	@RequestMapping("/availableSeating/{availableSeating}")
-	public String queryJourneyWithAvailableSeating(
-			@PathVariable("availableSeating") String availableSeating) {
+	public String queryJourneyWithAvailableSeating(@PathVariable("availableSeating") String availableSeating) {
 		String journeyFound = repository.getJourneyWithAvailableSeating(availableSeating);
 		if (journeyFound == null) {
 			return "Not Found";
 		}
 		return journeyFound;
 	}
-	
+
+	// Returns the journeys with the same vehicle type as the inputed one
 	@RequestMapping("/carType/{carType}")
 	public String queryJourneyWithCarType(@PathVariable("carType") String carType) {
 		String journeyFound = repository.getJourneyWithCarType(carType);
@@ -141,43 +148,25 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
-	//String start, String destination, String carType, String price, String seating, String date
+
+	// Filters the available journeys based on the entered data by the user
 	@RequestMapping("/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}")
-	public String sortJourney(@PathVariable("start") String start, 
-	                            @PathVariable("destination") String destination, @PathVariable("carType") String carType, 
-	                            @PathVariable("price") String price,@PathVariable("seating") String seating, 
-	                            @PathVariable("date") String date) {
+	public String sortJourney(@PathVariable("start") String start, @PathVariable("destination") String destination,
+			@PathVariable("carType") String carType, @PathVariable("price") String price,
+			@PathVariable("seating") String seating, @PathVariable("date") String date) {
 		String journeyFound = repository.sortJourney(start, destination, carType, price, seating, date);
 		if (journeyFound == null) {
 			return "journey not found";
 		}
 		return "sorted Journey found" + journeyFound;
 	}
-	
-//	@RequestMapping("/date/{date}")
-//	public String queryJourneyWithDate(@PathVariable("date") String date) {
-//		String journeyFound = repository.getJourneyWithDate(date);
-//		if (journeyFound == null) {
-//			return "Not Found";
-//		}
-//		return journeyFound;
-//	}
 
-
-	// @RequestMapping(value = "/journeyg", method = { RequestMethod.POST, RequestMethod.GET })
-	// public String queryJourney(@RequestParam(value = "stop", defaultValue = "montreal") String stop) {
-	// 	String journeyFound = repository.getJourney(stop);
-	// 	if (journeyFound == null) {
-	// 		return "Not Found";
-	// 	}
-	// 	return journeyFound;
-	// }
-	@RequestMapping(value = "/checks", method = {RequestMethod.POST, RequestMethod.GET})
-	public String checkUserStatus(@RequestParam(value="name", defaultValue="John") String username) {
-		String userstatus = repository.getUserStatus(username); 
-		if(userstatus == null) {
+	@RequestMapping(value = "/checks", method = { RequestMethod.POST, RequestMethod.GET })
+	public String checkUserStatus(@RequestParam(value = "name", defaultValue = "John") String username) {
+		String userstatus = repository.getUserStatus(username);
+		if (userstatus == null) {
 			return "User Not Found";
 		}
-		return userstatus; 
+		return userstatus;
 	}
 }
