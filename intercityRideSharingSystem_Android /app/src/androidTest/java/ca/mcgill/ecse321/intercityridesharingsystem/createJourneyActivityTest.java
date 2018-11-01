@@ -96,7 +96,7 @@ public class createJourneyActivityTest {
     @Test
     public void onCreate() {
         createJ("12-Dec-2018-12:12:12","Montreal","20","SUV","2","sk");
-        onView(withId(R.id.buttonAdvertise)).perform(click());
+        //onView(withId(R.id.buttonAdvertise)).perform(click());
         assertEquals(t1, "12-Dec-2018-12:12:12");
         assertEquals(t2, "Montreal");
         assertEquals(t3, "20");
