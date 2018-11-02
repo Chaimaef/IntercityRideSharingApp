@@ -33,7 +33,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class searchJourneyActivity extends AppCompatActivity {
     private String error = null;
-    //private Context context = this;
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = findViewById(R.id.error);
@@ -79,7 +78,7 @@ public class searchJourneyActivity extends AppCompatActivity {
 
             }
         });
-        //If the user wants all the journeys we don't filter using the feilds we just query all the journeys using the backend
+        //If the user wants all the journeys we don't filter using the fields we just query all the journeys using the backend
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String startCity = start.getText().toString();
@@ -104,7 +103,6 @@ public class searchJourneyActivity extends AppCompatActivity {
                         final TextView journey = new TextView(c);
 
                         for(final String j : journeys){
-                           // final TextView journey = new TextView(c);
                             journey.setText(j);
                             journey.setLayoutParams(new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -182,7 +180,7 @@ public class searchJourneyActivity extends AppCompatActivity {
                 String maxprice = price.getText().toString();
                 String seatings = seating.getText().toString();
                 String time = starttime.getText().toString();
-                //"/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}"
+               //We use the backend methhod sort journey to get the journeys whichh match the inputed filters
                 HttpUtils.get("journeysort/" + startCity + "/" + destinaitonCity + "/" + car + "/" + maxprice + "/" + seatings + "/" + time, new RequestParams(), new TextHttpResponseHandler() {
                     @Override
                     public void onFinish() {

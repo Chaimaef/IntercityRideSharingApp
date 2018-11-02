@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.lang.Object;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -28,6 +29,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class modifyJourneyActivity extends AppCompatActivity {
     private String error = null;
+
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = findViewById(R.id.error);
@@ -45,14 +47,18 @@ public class modifyJourneyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_journey_to_modify);
         Button allJourney = findViewById(R.id.alljourneys);
-        final TextView driverName= findViewById(R.id.input);
+        final TextView driverName = findViewById(R.id.input);
         final Context c = getApplicationContext();
         final LinearLayout journeyList = findViewById(R.id.jouneryLayout);
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                //Drivers are only allowed to modify journeys they created, so we ask for the driver's name first
+                //We query the journeys with the corresponding driver and display them.
+
                 final String drivername = driverName.getText().toString();
-                //"/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}"
-                    HttpUtils.get("journeyd/" + drivername, new RequestParams(), new TextHttpResponseHandler() {
+
+                HttpUtils.get("journeyd/" + drivername, new RequestParams(), new TextHttpResponseHandler() {
                     @Override
                     public void onFinish() {
                         super.onFinish();
@@ -60,9 +66,10 @@ public class modifyJourneyActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
-
+                     //We display the found journeys and set action listeners to allow the driver to pick which one to modify
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
-                        for(final String j : journeys){
+                        for (final String j : journeys) {
+                            //Prints all the found journeys and there information
                             TextView journey = new TextView(c);
                             journey.setText(j);
                             journey.setLayoutParams(new LinearLayout.LayoutParams(
@@ -77,7 +84,7 @@ public class modifyJourneyActivity extends AppCompatActivity {
                                     setContentView(R.layout.activity_modify_journey);
                                     final EditText driver = findViewById(R.id.drivers);
                                     final EditText journeyid = findViewById(R.id.ids);
-                                    final String id =  j.substring((j.indexOf("=")+1), j.indexOf(","));
+                                    final String id = j.substring((j.indexOf("=") + 1), j.indexOf(","));
                                     driver.setText(drivername);
                                     journeyid.setText(id);
                                     final EditText time = findViewById(R.id.startTime);
@@ -88,44 +95,44 @@ public class modifyJourneyActivity extends AppCompatActivity {
                                     Button modifyJourney = findViewById(R.id.buttonModify);
                                     modifyJourney.setOnClickListener(new View.OnClickListener() {
                                         public void onClick(View v) {
-                                    String timeMessage = time.getText().toString();
-                                    String stopMessage = stops.getText().toString();
-                                    String priceMessage = price.getText().toString();
-                                    String vehicleMessage = vehicle.getText().toString();
-                                    String seatingMessage = seating.getText().toString();
-                                    HttpUtils.post("journeyupdate/" + id + "/" + timeMessage +"/" +  stopMessage +"/" + priceMessage +"/" + vehicleMessage +"/" + seatingMessage +"/" + drivername, new RequestParams(), new JsonHttpResponseHandler() {
-                                        @Override
-                                        public void onFinish() {
-                                            super.onFinish();
-                                            time.setText("");
-                                            stops.setText("");
-                                            price.setText("");
-                                            vehicle.setText("");
-                                            seating.setText("");
-                                            driver.setText("");
-                                            error = "Journey updated successfully";
-                                            refreshErrorMessage();
-                                        }
+                                            String timeMessage = time.getText().toString();
+                                            String stopMessage = stops.getText().toString();
+                                            String priceMessage = price.getText().toString();
+                                            String vehicleMessage = vehicle.getText().toString();
+                                            String seatingMessage = seating.getText().toString();
+                                            HttpUtils.post("journeyupdate/" + id + "/" + timeMessage + "/" + stopMessage + "/" + priceMessage + "/" + vehicleMessage + "/" + seatingMessage + "/" + drivername, new RequestParams(), new JsonHttpResponseHandler() {
+                                                @Override
+                                                public void onFinish() {
+                                                    super.onFinish();
+                                                    time.setText("");
+                                                    stops.setText("");
+                                                    price.setText("");
+                                                    vehicle.setText("");
+                                                    seating.setText("");
+                                                    driver.setText("");
+                                                    error = "Journey updated successfully";
+                                                    refreshErrorMessage();
+                                                }
 
-                                        @Override
-                                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                            super.onSuccess(statusCode, headers, response);
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                                    super.onSuccess(statusCode, headers, response);
 
-                                        }
+                                                }
 
-                                        @Override
-                                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                            //super.onFailure(statusCode, headers, throwable, errorResponse);
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                                    //super.onFailure(statusCode, headers, throwable, errorResponse);
 
-                                            try {
-                                                error += errorResponse.get("message").toString();
-                                            } catch (JSONException e) {
-                                                error += e.getMessage();
-                                            }
-                                            refreshErrorMessage();
-                                        }
+                                                    try {
+                                                        error += errorResponse.get("message").toString();
+                                                    } catch (JSONException e) {
+                                                        error += e.getMessage();
+                                                    }
+                                                    refreshErrorMessage();
+                                                }
 
-                                    });
+                                            });
                                         }
                                     });
                                 }
@@ -134,6 +141,7 @@ public class modifyJourneyActivity extends AppCompatActivity {
                         }
 
                     }
+
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
                         refreshErrorMessage();

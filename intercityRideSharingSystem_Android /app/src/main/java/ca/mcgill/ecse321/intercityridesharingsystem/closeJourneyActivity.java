@@ -26,6 +26,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
+//Sets the status feild of the chohsen journey to Closed
 public class closeJourneyActivity extends AppCompatActivity {
     private String error = null;
     private void refreshErrorMessage() {
@@ -40,6 +41,7 @@ public class closeJourneyActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,10 @@ public class closeJourneyActivity extends AppCompatActivity {
         final LinearLayout journeyList = findViewById(R.id.jouneryLayout);
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                //Drivers are only allowed to close journeys they created, so we ask for the driver's name first
+                //We query the journeys with the corresponding driver and display them.
+
                 final String drivername = driverName.getText().toString();
                 HttpUtils.get("journeyd/" + drivername, new RequestParams(), new TextHttpResponseHandler() {
                     @Override
@@ -57,9 +63,10 @@ public class closeJourneyActivity extends AppCompatActivity {
                         super.onFinish();
                     }
 
+                    //We display the found journeys and set action listeners to allow the driver to pick which one to close
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
-
+                     //Prints all the found journeys and there information
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
                         for(final String j : journeys){
                             TextView journey = new TextView(c);
@@ -76,6 +83,7 @@ public class closeJourneyActivity extends AppCompatActivity {
                                  setContentView(R.layout.activity_close_journey);
                                     final TextView chosenJourney = findViewById(R.id.chosenJourney);
                                     chosenJourney.setText(j);
+                                    //We have a button that calls our close journey method from the backend
                                     Button close = findViewById(R.id.buttonClose);
                                     close.setOnClickListener(new View.OnClickListener() {
                                         public void onClick(View v) {
@@ -85,10 +93,9 @@ public class closeJourneyActivity extends AppCompatActivity {
                                         @Override
                                         public void onFinish() {
                                             super.onFinish();
-                                            error = "Journey created successfully";
+                                            error = "Journey closed successfully";
                                             refreshErrorMessage();
                                         }
-
                                         @Override
                                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                             super.onSuccess(statusCode, headers, response);

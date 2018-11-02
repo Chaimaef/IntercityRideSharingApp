@@ -30,6 +30,8 @@ public class createJourneyActivity extends AppCompatActivity {
         }
     }
 
+    //Allows a driver to add a new journey advertisement
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +45,8 @@ public class createJourneyActivity extends AppCompatActivity {
         final EditText driver = findViewById(R.id.drivers);
         advertiseJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //error = "";
+                //Gets text field contents to use them for the create journey method in the backend
+
                 String timeMessage = time.getText().toString();
                 String stopMessage = stops.getText().toString();
                 String priceMessage = price.getText().toString();
