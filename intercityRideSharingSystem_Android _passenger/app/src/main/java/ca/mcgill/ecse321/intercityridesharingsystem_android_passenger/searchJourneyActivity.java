@@ -45,6 +45,8 @@ public class searchJourneyActivity extends AppCompatActivity {
             tvError.setVisibility(View.VISIBLE);
         }
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,7 @@ public class searchJourneyActivity extends AppCompatActivity {
 
             }
         });
+        //If the user wants all the journeys we don't filter using the feilds we just query all the journeys using the backend
         allJourney.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String startCity = start.getText().toString();
@@ -98,8 +101,10 @@ public class searchJourneyActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
                         List<String> journeys = Arrays.asList(response.split("\\s*<br>\\s*"));
+                        final TextView journey = new TextView(c);
+
                         for(final String j : journeys){
-                            final TextView journey = new TextView(c);
+                           // final TextView journey = new TextView(c);
                             journey.setText(j);
                             journey.setLayoutParams(new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -167,6 +172,7 @@ public class searchJourneyActivity extends AppCompatActivity {
             }
         });
 
+        //If the passenger wants to filter through the journeys, we get the content of the text fields
         sortJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

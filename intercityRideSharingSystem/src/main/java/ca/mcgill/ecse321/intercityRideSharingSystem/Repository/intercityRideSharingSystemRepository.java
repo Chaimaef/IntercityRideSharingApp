@@ -318,6 +318,8 @@ public class intercityRideSharingSystemRepository {
 		List<Journey> finalresultJourney = new ArrayList<Journey>();
 		List<Journey> sortedJourney = new ArrayList<Journey>();
 		List<Journey> finalsortedJourney = new ArrayList<Journey>();
+		List<Journey> tempsortedJourney = new ArrayList<Journey>();
+		
 		for (Journey s : journeys) {
 			for (Journey d : journeyd) {
 				if (s.getJourneyId() == d.getJourneyId()) {
@@ -327,6 +329,7 @@ public class intercityRideSharingSystemRepository {
 				}
 			}
 		}
+		
 		for (Journey r : resultJourney) {
 			String allStops = r.getStop();
 			List<String> stops = Arrays.asList(allStops.split("\\s*_\\s*"));
@@ -336,22 +339,33 @@ public class intercityRideSharingSystemRepository {
 				i++;
 			}
 		}
+		
 		for (Journey f : finalresultJourney) {
 			for (Journey c : journeyCar) {
-				for (Journey s : journeyseating) {
-					if (s.getJourneyId() == c.getJourneyId() && c.getJourneyId() == f.getJourneyId()) {
-					}
+					if (c.getJourneyId() == f.getJourneyId()) {				
 					int i = 0;
-					sortedJourney.add(i, s);
+					sortedJourney.add(i, c);
 					i++;
+					}
 				}
 
 			}
+		
+		
+		for (Journey c : sortedJourney) {
+			for (Journey s : journeyseating) {
+				if (s.getJourneyId() == c.getJourneyId() ) {
+				int i = 0;
+				tempsortedJourney.add(i, s);
+				i++;
+				}
+			}
 		}
+		
 		int targetPrice = Integer.parseInt(price);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");
 
-		for (Journey journey : sortedJourney) {
+		for (Journey journey : tempsortedJourney) {
 			String allstops = journey.getStop();
 			List<String> stop = Arrays.asList(allstops.split("\\s*_\\s*"));
 			String prices = journey.getPrice();
@@ -370,7 +384,7 @@ public class intercityRideSharingSystemRepository {
 			} catch (Exception e) {
 				return e.getMessage();
 			}
-			if (realPrice <= targetPrice && timeDiff >= 0) {
+			if (realPrice <= targetPrice && timeDiff <= 0) {
 				int j = 0;
 				finalsortedJourney.add(j, journey);
 				j++;
