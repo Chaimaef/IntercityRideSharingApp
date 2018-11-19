@@ -51,6 +51,7 @@ public class intercityRideSharingSystemRepository {
 			p.setPassengerId(u.getId());
 			p.setStatus(status);
 			p.setRating(rating);
+			p.setNumberOfJourneys(0);
 			entityManager.persist(p);
 		} else if (role.equals("Driver")) {
 			Driver d = new Driver();
@@ -58,6 +59,7 @@ public class intercityRideSharingSystemRepository {
 			d.setId(u.getId());
 			d.setStatus(status);
 			d.setRating(rating);
+			d.setNumberOfJourneys(0);
 			entityManager.persist(d);
 		} else {
 			Administrator a = new Administrator();

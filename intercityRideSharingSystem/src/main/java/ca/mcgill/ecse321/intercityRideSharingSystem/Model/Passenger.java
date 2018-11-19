@@ -81,7 +81,7 @@ public class Passenger {
 	public void setRating(Rating rating) {
 		this.rating = rating;
 	}
-
+	@Column(name = "numberofjourneys")
 	public int getNumberOfJourneys() {
 		return numberOfJourneys;
 	}
