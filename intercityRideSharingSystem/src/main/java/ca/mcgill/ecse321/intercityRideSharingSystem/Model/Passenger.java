@@ -23,6 +23,7 @@ public class Passenger {
 	private String passengerName;
 	private Status status;
 	private Rating rating;
+	private int numberOfJourneys;
 
 	@Id
 	@Column(name = "passengerid")
@@ -79,6 +80,14 @@ public class Passenger {
 
 	public void setRating(Rating rating) {
 		this.rating = rating;
+	}
+
+	public int getNumberOfJourneys() {
+		return numberOfJourneys;
+	}
+
+	public void setNumberOfJourneys(int numberOfJourneys) {
+		this.numberOfJourneys = numberOfJourneys;
 	}
 
 }

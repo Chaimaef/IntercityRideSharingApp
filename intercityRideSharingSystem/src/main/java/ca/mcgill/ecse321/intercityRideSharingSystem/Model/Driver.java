@@ -22,7 +22,8 @@ public class Driver {
 	private Integer id;
 	private Status status;
 	private Rating rating;
-
+    private int numberOfJourneys;
+    
 	public void setName(String value) {
 		this.name = value;
 	}
@@ -80,6 +81,14 @@ public class Driver {
 
 	public void setRating(Rating rating) {
 		this.rating = rating;
+	}
+
+	public int getNumberOfJourneys() {
+		return numberOfJourneys;
+	}
+
+	public void setNumberOfJourneys(int numberOfJourneys) {
+		this.numberOfJourneys = numberOfJourneys;
 	}
 
 }

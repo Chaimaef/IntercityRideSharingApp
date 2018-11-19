@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
@@ -150,6 +152,15 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	@RequestMapping("/rankDrivers")
+	public Map<Integer, String> rankDrivers() {
+		Map<Integer, String> rankedDrivers = repository.rankDrivers();
+		if (rankedDrivers == null) {
+			return null;
+		}
+		return rankedDrivers;
+	}
+	
 	// Filters the available journeys based on the entered data by the user
 	@RequestMapping("/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}")
 	public String sortJourney(@PathVariable("start") String start, @PathVariable("destination") String destination,
