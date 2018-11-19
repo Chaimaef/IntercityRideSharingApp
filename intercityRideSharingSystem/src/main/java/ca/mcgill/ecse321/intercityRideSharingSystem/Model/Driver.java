@@ -87,7 +87,7 @@ public class Driver {
 		return "Driver [id=" + id + ", driverName #" + name + ",status=" + status + ",rating="
 				+ rating + " ]";
 	}
-
+	@Column(name = "numberofjourneys")
 	public int getNumberOfJourneys() {
 		return numberOfJourneys;
 	}
