@@ -17,6 +17,7 @@ import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
+
 @CrossOrigin 
 @RestController
 public class intercityRideSharingSystemController {
@@ -51,6 +52,18 @@ public class intercityRideSharingSystemController {
 		}
 		return user;
 	}
+
+	// Method to get a driver using the name field only, it uses a method in
+	// repository which communicates with the database
+	@RequestMapping("/driverg/{name}")
+	public String queryDriver(@PathVariable("name") String name) {
+		String user = repository.getActiveDriver(name);
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
+
 
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {

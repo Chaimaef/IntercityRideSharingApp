@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -80,6 +81,10 @@ public class Driver {
 
 	public void setRating(Rating rating) {
 		this.rating = rating;
+	}
+	public String driverToString() {
+		return "Driver [id=" + id + ", driverName #" + name + ",status=" + status + ",rating="
+				+ rating + " ]";
 	}
 
 }

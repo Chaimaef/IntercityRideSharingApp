@@ -80,6 +80,20 @@ public class intercityRideSharingSystemRepository {
 	// Method used to convert the list received from the method finUserWithName to a
 	// long string
 	@Transactional
+	public String getActiveDriver(String name) {
+		List<Driver> drivers = getDriverWithName(name);
+		String driverlist = "";
+		for (Driver d : drivers) {
+			if(d.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+				driverlist += d.driverToString();
+			}
+		}
+		return driverlist;
+	}
+
+	// Method used to convert the list received from the method finUserWithName to a
+	// long string
+	@Transactional
 	public User getUserbyName(String name) {
 		List<User> users = findUserWithName(name);
 		for (User u : users) {
@@ -114,6 +128,17 @@ public class intercityRideSharingSystemRepository {
 	@SuppressWarnings("unchecked")
 	public List<User> findUserWithName(String name) {
 		return (List<User>) entityManager.createQuery("SELECT c FROM User c WHERE strpos(c.name, :userName) > 0")
+				.setParameter("userName", name).getResultList();
+	}
+
+	//Create a query to retrieve data from the database: Returns an active driver with
+	//the same name as the one inputed 
+	@SuppressWarnings("unchecked")
+	public List<Driver> getDriverWithName(String name) {
+		if(name == ""){
+			return (List<Driver>) entityManager.createNamedQuery("SELECT j FROM Driver j WHERE j.id IS NOT NULL").getResultList();
+		}
+		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c WHERE c.name LIKE CONCAT('%', :userName, '%')")
 				.setParameter("userName", name).getResultList();
 	}
 
