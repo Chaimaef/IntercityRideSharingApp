@@ -23,8 +23,8 @@ public class Passenger {
 	private String passengerName;
 	private Status status;
 	private Rating rating;
-	private int numberOfJourneys;
-
+    private int numberOfJourneys;
+	
 	@Id
 	@Column(name = "passengerid")
 	// @GeneratedValue(strategy = GenerationType.AUTO)
