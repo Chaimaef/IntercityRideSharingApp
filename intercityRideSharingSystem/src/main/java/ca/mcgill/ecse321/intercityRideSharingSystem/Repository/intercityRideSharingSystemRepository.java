@@ -228,6 +228,7 @@ public class intercityRideSharingSystemRepository {
 		}
 		return wantedJourneys;
 	}
+	
 
 	// Converts the list returned by findJourneyWithStop to a long string
 	@Transactional
