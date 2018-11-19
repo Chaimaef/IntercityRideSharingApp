@@ -55,7 +55,7 @@ public class User {
 	  }
 
 	public enum Status {
-		filter, inAJourney, idling
+		idling, active
 	}
 
 	public enum Rating {
