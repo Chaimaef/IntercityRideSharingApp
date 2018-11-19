@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.intercityRideSharingSystem.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.*;
-
+@CrossOrigin 
 @RestController
 public class intercityRideSharingSystemController {
 	Date date = new Date();

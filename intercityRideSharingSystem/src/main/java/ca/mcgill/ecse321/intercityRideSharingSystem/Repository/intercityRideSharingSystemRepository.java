@@ -34,7 +34,12 @@ public class intercityRideSharingSystemRepository {
 		User u = new User();
 		u.setName(name);
 		u.setRole(role);
+		if(status!= null) {
 		u.setStatus(status);
+		}
+		else {
+		u.setStatus(status.idling);
+		}		
 		u.setRating(rating);
 		entityManager.persist(u);
 		if (role.equals("Passenger")) {
