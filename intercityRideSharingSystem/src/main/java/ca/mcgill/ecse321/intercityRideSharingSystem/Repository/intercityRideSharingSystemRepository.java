@@ -117,6 +117,17 @@ public class intercityRideSharingSystemRepository {
 		return driverlist;
 	}
 
+	@Transactional
+	public String getActivePassenger(String name) {
+		List<Passenger> passengers = getPassengerWithName(name);
+		String passengerlist = "";
+		 for (Passenger p : passengers) {
+			if(p.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+		 		passengerlist += p.passengerToString();
+		 	}
+		 }
+		return passengerlist;
+	}
 
 	@Transactional
 	public String getAllActivePassenger() {
@@ -216,7 +227,7 @@ public class intercityRideSharingSystemRepository {
 	@SuppressWarnings("unchecked")
 	public List<Passenger> findPassengerWithName(String name) {
 		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c WHERE strpos(c.name, :userName) > 0")
-				.setParameter("passengername", name).getResultList();
+				.setParameter("userName", name).getResultList();
 	}
 	
 	
@@ -226,11 +237,14 @@ public class intercityRideSharingSystemRepository {
 	//the same name as the one inputed 
 	@SuppressWarnings("unchecked")
 	public List<Driver> getDriverWithName(String name) {
-		if(name == ""){
-			return (List<Driver>) entityManager.createNamedQuery("SELECT j FROM Driver j WHERE j.id IS NOT NULL").getResultList();
-		}
 		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c WHERE c.name LIKE CONCAT('%', :userName, '%')")
 				.setParameter("userName", name).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Passenger> getPassengerWithName(String name) {
+		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c WHERE c.name LIKE CONCAT('%', :passengername, '%')")
+				.setParameter("passengername", name).getResultList();
 	}
 
 
