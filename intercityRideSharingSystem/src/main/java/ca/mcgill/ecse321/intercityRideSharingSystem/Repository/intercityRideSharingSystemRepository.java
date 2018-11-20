@@ -117,6 +117,19 @@ public class intercityRideSharingSystemRepository {
 		return driverlist;
 	}
 
+
+	@Transactional
+	public String getAllActivePassenger() {
+		List<Passenger> passengers = queryAllPassengers();
+		String passengerlist = "";
+		 for (Passenger p : passengers) {
+			if(p.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+		 		passengerlist += p.passengerToString();
+		 	}
+		 }
+		return passengerlist;
+	}
+
 	// Method used to convert the list received from the method finUserWithName to a
 	// long string
 	@Transactional
@@ -176,6 +189,12 @@ public class intercityRideSharingSystemRepository {
 	@SuppressWarnings("unchecked")
 	public List<Driver> queryAllDrivers() {
 		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c")
+				.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Passenger> queryAllPassengers() {
+		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c")
 				.getResultList();
 	}
 

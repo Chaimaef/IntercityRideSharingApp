@@ -67,7 +67,7 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping("/driverg/")
-	public String queryDriver() {
+	public String queryAllDriver() {
 		String user = repository.getAllActiveDriver();
 		if (user == null) {
 			return "Not Found";
@@ -75,6 +75,14 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
+	@RequestMapping("/passengerg/")
+	public String queryAllPassenger() {
+		String user = repository.getAllActivePassenger();
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
 
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {
