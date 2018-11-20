@@ -66,6 +66,15 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
+	@RequestMapping("/driverg/")
+	public String queryDriver() {
+		String user = repository.getAllActiveDriver();
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
+
 
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {

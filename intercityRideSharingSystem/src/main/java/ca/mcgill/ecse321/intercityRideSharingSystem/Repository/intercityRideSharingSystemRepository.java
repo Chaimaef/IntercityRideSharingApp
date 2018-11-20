@@ -105,6 +105,18 @@ public class intercityRideSharingSystemRepository {
 		return driverlist;
 	}
 
+	@Transactional
+	public String getAllActiveDriver() {
+		List<Driver> drivers = queryAllDrivers();
+		String driverlist = "";
+		for (Driver d : drivers) {
+			if(d.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+				driverlist += d.driverToString();
+			}
+		}
+		return driverlist;
+	}
+
 	// Method used to convert the list received from the method finUserWithName to a
 	// long string
 	@Transactional
