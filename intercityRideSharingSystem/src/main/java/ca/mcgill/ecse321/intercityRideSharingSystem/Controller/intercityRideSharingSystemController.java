@@ -84,6 +84,25 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
+
+	@RequestMapping("/journeysg/")
+	public String queryAllActiveJourney() {
+		String journey = repository.getAllActiveJourney();
+		if (journey == null) {
+			return "Not Found";
+		}
+		return journey;
+	}
+
+	@RequestMapping("/journeysg/{stop}")
+	public String queryActiveJourney(@PathVariable("stop") String stop) {
+		String journey = repository.getActiveJourney(stop);
+		if (journey == null) {
+			return "Not Found";
+		}
+		return journey;
+	}
+
 	@RequestMapping("/passengerg/{name}")
 	public String queryActivePassenger(@PathVariable("name") String name) {
 		String user = repository.getActivePassenger(name);
