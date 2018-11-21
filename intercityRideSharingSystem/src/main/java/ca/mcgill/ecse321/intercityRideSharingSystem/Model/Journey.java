@@ -130,4 +130,8 @@ public class Journey {
 				+ ", drivers=" + driver + ", status=" + status + ", passenger=" + passenger + "]";
 	}
 
+	public String stopsToString() {
+		return "Journey [id=" + journeyId + ", stops=" + stop + ", associated price=" + price +  "]";
+	}
+
 }

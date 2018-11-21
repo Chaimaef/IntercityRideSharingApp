@@ -147,7 +147,7 @@ public class intercityRideSharingSystemRepository {
 		String journeylist = "";
 		 for (Journey p : journeys) {
 			if(p.getJourneyStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active){
-		 		journeylist += p.toString();
+		 		journeylist += p.stopsToString();
 		 	}
 		 }
 		return journeylist;
@@ -159,7 +159,7 @@ public class intercityRideSharingSystemRepository {
 		String journeylist = "";
 		 for (Journey p : journeys) {
 			if(p.getJourneyStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active){
-		 		journeylist += p.toString();
+		 		journeylist += p.stopsToString();
 		 	}
 		 }
 		return journeylist;
