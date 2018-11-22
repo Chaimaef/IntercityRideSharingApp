@@ -5,13 +5,21 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,6 +29,7 @@ import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Driver;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Passenger;
+import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Stop;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Administrator;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey;
 
@@ -33,16 +42,18 @@ public class intercityRideSharingSystemRepository {
 	// Method called in the controller, it uses the data received from the mapping
 	// to set the according fields in the database
 	@Transactional
-	public User createUser(String name, String role, Status status, Rating rating) {
+	public String createUser(String name, String role, Status status, Rating rating) {
+		if (getUserbyName(name) != null) {
+			return "A user already exists under this name";
+		}
 		User u = new User();
 		u.setName(name);
 		u.setRole(role);
-		if(status!= null) {
-		u.setStatus(status);
+		if (status != null) {
+			u.setStatus(status);
+		} else {
+			u.setStatus(Status.idling);
 		}
-		else {
-		u.setStatus(Status.idling);
-		}		
 		u.setRating(rating);
 		entityManager.persist(u);
 		if (role.equals("Passenger")) {
@@ -67,7 +78,7 @@ public class intercityRideSharingSystemRepository {
 			a.setId(u.getId());
 			entityManager.persist(a);
 		}
-		return u;
+		return "" + u.getId();
 	}
 
 	// Method used to convert the list received from the method finUserWithName to a
@@ -86,11 +97,41 @@ public class intercityRideSharingSystemRepository {
 		List<Driver> drivers = queryAllDrivers();
 		String driverList = "";
 		for (Driver d : drivers) {
-			driverList += d.getName() + d.getNumberOfJourneys() + "<br>";
+			driverList += d.getName() + "_";
 		}
 		return driverList;
 	}
-	
+
+	public String getAllStops() {
+		List<Stop> stops = queryAllStops();
+		String stopList = "";
+		for (Stop s : stops) {
+			stopList += s.getStopName() + "_";
+		}
+		return stopList;
+	}
+
+	public String getAllJourneys() {
+		List<Journey> journeys = queryAllJourneys();
+		String journeyList = "";
+		for (Journey j : journeys) {
+			journeyList += j.getJourneyId() + "_";
+		}
+		return journeyList;
+	}
+
+	public String getAllPassengers() {
+		List<Passenger> passengers = queryAllPassengers();
+		if (passengers.isEmpty()) {
+			return null;
+		}
+		String passengerList = "";
+		for (Passenger p : passengers) {
+			passengerList += p.getName() + "_";
+		}
+		return passengerList;
+	}
+
 	// Method used to convert the list received from the method finUserWithName to a
 	// long string
 	@Transactional
@@ -98,7 +139,7 @@ public class intercityRideSharingSystemRepository {
 		List<Driver> drivers = getDriverWithName(name);
 		String driverlist = "";
 		for (Driver d : drivers) {
-			if(d.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+			if (d.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active) {
 				driverlist += d.driverToString();
 			}
 		}
@@ -117,7 +158,7 @@ public class intercityRideSharingSystemRepository {
 		}
 		return null;
 	}
-	
+
 	public Driver getDriverbyName(String name) {
 		List<Driver> drivers = findDriverWithName(name);
 		for (Driver d : drivers) {
@@ -127,7 +168,7 @@ public class intercityRideSharingSystemRepository {
 		}
 		return null;
 	}
-	
+
 	public Passenger getPassengerbyName(String name) {
 		List<Passenger> passengers = findPassengerWithName(name);
 		for (Passenger p : passengers) {
@@ -137,34 +178,96 @@ public class intercityRideSharingSystemRepository {
 		}
 		return null;
 	}
-	
-	
+
+	public Stop getStopbyName(String name) {
+		List<Stop> stops = findStopWithName(name);
+		for (Stop s : stops) {
+			if ((s.getStopName()).equals(name)) {
+				return s;
+			}
+		}
+		return null;
+	}
 
 	// Method which creates a journey and sets its fields to the inputed data
 	// received from the controller
 	@Transactional
-	public Journey createJourney(String startTime, String stops, String price, String vehicleType,
+	public String createJourney(String startTime, String stops, String price, String vehicleType,
 			String avilableSeating, String driver) {
 		Journey journey = new Journey();
-		Driver d= getDriverbyName(driver);
-		d.setNumberOfJourneys(d.getNumberOfJourneys()+1);
+		Driver d = getDriverbyName(driver);
+		if (d == null) {
+			return "Driver doesn't exist";
+		}
+		d.setNumberOfJourneys(d.getNumberOfJourneys() + 1);
 		String finalPrice = "0_" + price;
+		List<String> list = Arrays.asList(stops.split("\\s*_\\s*"));
+		String stopList = getAllStops();
+		if (stopList != null) {
+			List<String> stoplist = Arrays.asList(stopList.split("\\s*_\\s*"));
+			for (String s : list) {
+				if (stoplist.contains(s)) {
+					Stop stop = getStopbyName(s);
+					stop.setUsage(stop.getUsage() + 1);
+					entityManager.persist(stop);
+				} else {
+					Stop stop = new Stop();
+					stop.setStopName(s);
+					stop.setUsage(1);
+					entityManager.persist(stop);
+				}
+			}
+		} else {
+			for (String s : list) {
+				Stop stop = new Stop();
+				stop.setStopName(s);
+				stop.setUsage(1);
+				entityManager.persist(stop);
+			}
+
+		}
+
 		journey.setStartTime(startTime);
 		journey.setStop(stops);
 		journey.setPrice(finalPrice);
 		journey.setVehicleType(vehicleType);
 		journey.setAvailableSeating(avilableSeating);
 		journey.setDriver(driver);
+		if (d.getJourney() == null) {
+			d.setJourney("" + journey.getJourneyId());
+		} else {
+			d.setJourney(d.getJourney() + "_" + String.valueOf(journey.getJourneyId()));
+		}
 		ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status journeyStatus = ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active;
 		journey.setJourneyStatus(journeyStatus);
 		entityManager.persist(journey);
-		return journey;
+		return journey.toString();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Driver> queryAllDrivers() {
-		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c")
-				.getResultList();
+		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c").getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Stop> queryAllStops() {
+		// Query query= entityManager.createQuery("SELECT c FROM Stop c");
+		// if(query!=null) {
+		return (List<Stop>) entityManager.createQuery("SELECT c FROM Stop c").getResultList();
+		// }
+		// else {
+		// return null;
+		// }
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Passenger> queryAllPassengers() {
+		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c").getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Journey> queryAllJourneys() {
+		return (List<Journey>) entityManager.createQuery("SELECT c FROM Journey c").getResultList();
 	}
 
 	// Creates a query to retrieve data from the database: Returns a user with the
@@ -175,33 +278,38 @@ public class intercityRideSharingSystemRepository {
 				.setParameter("userName", name).getResultList();
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	public List<Driver> findDriverWithName(String name) {
-		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c WHERE strpos(c.name, :userName) > 0")
-				.setParameter("drivername", name).getResultList();
+		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c WHERE strpos(c.name, :driverName) > 0")
+				.setParameter("driverName", name).getResultList();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Passenger> findPassengerWithName(String name) {
-		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c WHERE strpos(c.name, :userName) > 0")
-				.setParameter("passengername", name).getResultList();
+		return (List<Passenger>) entityManager
+				.createQuery("SELECT c FROM Passenger c WHERE strpos(c.name, :passengerName) > 0")
+				.setParameter("passengerName", name).getResultList();
 	}
-	
-	
 
+	@SuppressWarnings("unchecked")
+	public List<Stop> findStopWithName(String name) {
+		return (List<Stop>) entityManager.createQuery("SELECT c FROM Stop c WHERE strpos(c.stopName, :stop) > 0")
+				.setParameter("stop", name).getResultList();
+	}
 
-	//Create a query to retrieve data from the database: Returns an active driver with
-	//the same name as the one inputed 
+	// Create a query to retrieve data from the database: Returns an active driver
+	// with
+	// the same name as the one inputed
 	@SuppressWarnings("unchecked")
 	public List<Driver> getDriverWithName(String name) {
-		if(name == ""){
-			return (List<Driver>) entityManager.createNamedQuery("SELECT j FROM Driver j WHERE j.id IS NOT NULL").getResultList();
+		if (name == "") {
+			return (List<Driver>) entityManager.createNamedQuery("SELECT j FROM Driver j WHERE j.id IS NOT NULL")
+					.getResultList();
 		}
-		return (List<Driver>) entityManager.createQuery("SELECT c FROM Driver c WHERE c.name LIKE CONCAT('%', :userName, '%')")
+		return (List<Driver>) entityManager
+				.createQuery("SELECT c FROM Driver c WHERE c.name LIKE CONCAT('%', :userName, '%')")
 				.setParameter("userName", name).getResultList();
 	}
-
 
 	// Creates a query to retrieve data from the database: Returns the journeys
 	// which contain the wanted stop
@@ -248,8 +356,8 @@ public class intercityRideSharingSystemRepository {
 	public String joinJourneyWithID(String id, String passengers) {
 		List<Journey> journeys = findJourneyWithID(Integer.parseInt(id));
 		String journeylist = "";
-		Passenger p= getPassengerbyName(passengers);
-		p.setNumberOfJourneys(p.getNumberOfJourneys()+1);
+		Passenger p = getPassengerbyName(passengers);
+		p.setNumberOfJourneys(p.getNumberOfJourneys() + 1);
 		for (Journey j : journeys) {
 			if (j.getPassenger() == null) {
 				j.setPassenger(passengers);
@@ -305,6 +413,29 @@ public class intercityRideSharingSystemRepository {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<Journey> findJourneyWithId(int Id) {
+		return (List<Journey>) entityManager.createQuery("SELECT j FROM Journey j WHERE j.journeyId = :Id")
+				.setParameter("Id", Id).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Journey> getJourneyPassengers(int Id) {
+		return (List<Journey>) entityManager
+				.createQuery("SELECT j.journeyPassengers FROM Journey j WHERE j.journeyId = :Id").setParameter("Id", Id)
+				.getResultList();
+	}
+
+	@Transactional
+	public Journey getJourneyWithId(int Id) {
+		List<Journey> journeys = findJourneyWithId(Id);
+		// String journeylist = "";
+		// for (Journey j : journeys) {
+		// journeylist += j.toString() + "<br>";
+		// }
+		return journeys.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Journey> findJourneyWithAvailableSeating(String wantedSeating) {
 		Integer Seating = Integer.parseInt(wantedSeating);
 		int i = 0;
@@ -321,7 +452,6 @@ public class intercityRideSharingSystemRepository {
 		}
 		return wantedJourneys;
 	}
-	
 
 	// Converts the list returned by findJourneyWithStop to a long string
 	@Transactional
@@ -413,7 +543,7 @@ public class intercityRideSharingSystemRepository {
 		List<Journey> sortedJourney = new ArrayList<Journey>();
 		List<Journey> finalsortedJourney = new ArrayList<Journey>();
 		List<Journey> tempsortedJourney = new ArrayList<Journey>();
-		
+
 		for (Journey s : journeys) {
 			for (Journey d : journeyd) {
 				if (s.getJourneyId() == d.getJourneyId()) {
@@ -423,7 +553,7 @@ public class intercityRideSharingSystemRepository {
 				}
 			}
 		}
-		
+
 		for (Journey r : resultJourney) {
 			String allStops = r.getStop();
 			List<String> stops = Arrays.asList(allStops.split("\\s*_\\s*"));
@@ -433,29 +563,28 @@ public class intercityRideSharingSystemRepository {
 				i++;
 			}
 		}
-		
+
 		for (Journey f : finalresultJourney) {
 			for (Journey c : journeyCar) {
-					if (c.getJourneyId() == f.getJourneyId()) {				
+				if (c.getJourneyId() == f.getJourneyId()) {
 					int i = 0;
 					sortedJourney.add(i, c);
 					i++;
-					}
 				}
-
 			}
-		
-		
+
+		}
+
 		for (Journey c : sortedJourney) {
 			for (Journey s : journeyseating) {
-				if (s.getJourneyId() == c.getJourneyId() ) {
-				int i = 0;
-				tempsortedJourney.add(i, s);
-				i++;
+				if (s.getJourneyId() == c.getJourneyId()) {
+					int i = 0;
+					tempsortedJourney.add(i, s);
+					i++;
 				}
 			}
 		}
-		
+
 		int targetPrice = Integer.parseInt(price);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");
 
@@ -492,18 +621,227 @@ public class intercityRideSharingSystemRepository {
 		return sortedjouneys;
 
 	}
-		
-	public Map<Integer, String> rankDrivers() {
-		String driverList= getAllDrivers();
-			List<String> list = Arrays.asList(driverList.split("\\s*_\\s*"));
-			//List <Integer> driverJourneys;
-			HashMap<Integer, String> hmap = new HashMap<Integer, String>();
-			for(String d : list) {
-				Driver driver= getDriverbyName(d);
-				hmap.put(driver.getNumberOfJourneys(),d);							
+
+	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+		// Create a list from elements of HashMap
+		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
+
+		// Sort the list
+		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+				return (o2.getValue()).compareTo(o1.getValue());
 			}
-			Map<Integer, String> map = new TreeMap<Integer, String>(hmap);
-			return map;
+		});
+
+		// put data from sorted list to hashmap
+		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+		for (Map.Entry<String, Integer> aa : list) {
+			temp.put(aa.getKey(), aa.getValue());
 		}
+		return temp;
 	}
 
+	public String rankDrivers() {
+		String driverList = getAllDrivers();
+		String returnlist = null;
+		List<String> list = Arrays.asList(driverList.split("\\s*_\\s*"));
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		for (String d : list) {
+			Driver driver = getDriverbyName(d);
+			hmap.put(d, driver.getNumberOfJourneys());
+		}
+		Map<String, Integer> map = sortByValue(hmap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+
+	public String rankDriversWithDate(String startDate, String endDate) {
+
+		if (startDate == null) {
+			startDate = "01-01-1900-09:00:00";
+		}
+
+		if (endDate == null) {
+			endDate = "01-01-2100-09:00:00";
+		}
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");
+		String returnlist = null;
+		Date tempStartDate = null;
+		try {
+			tempStartDate = formatter.parse(startDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		Date tempEndDate = null;
+		try {
+			tempEndDate = formatter.parse(endDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		String journeyString = getAllJourneys();
+		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
+		List<Journey> validJourneys = new ArrayList<Journey>();
+
+		for (String s : journeyList) {
+			int Id = Integer.parseInt(s);
+			Journey j = getJourneyWithId(Id);
+			Date journeyDate = null;
+			try {
+				journeyDate = formatter.parse(j.getStartTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			if (journeyDate.before(tempEndDate) && journeyDate.after(tempStartDate)) {
+				validJourneys.add(j);
+			}
+		}
+
+		HashMap<String, Integer> driverMap = new HashMap<String, Integer>();
+		for (Journey j : validJourneys) {
+			String driverName = j.getDriver();
+			if (driverMap.containsKey(driverName)) {
+				driverMap.put(driverName, driverMap.get(driverName) + 1);
+			} else {
+				driverMap.put(driverName, 1);
+			}
+		}
+		Map<String, Integer> map = sortByValue(driverMap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+
+	public String rankPassengersWithDate(String startDate, String endDate) {
+
+		if (startDate == null) {
+			startDate = "01-01-1900-09:00:00";
+		}
+
+		if (endDate == null) {
+			endDate = "01-01-2100-09:00:00";
+		}
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");
+		String returnlist = null;
+		Date tempStartDate = null;
+		try {
+			tempStartDate = formatter.parse(startDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		Date tempEndDate = null;
+		try {
+			tempEndDate = formatter.parse(endDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		String journeyString = getAllJourneys();
+		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
+		List<Journey> validJourneys = new ArrayList<Journey>();
+
+		for (String s : journeyList) {
+			int Id = Integer.parseInt(s);
+			Journey j = getJourneyWithId(Id);
+			Date journeyDate = null;
+			try {
+				journeyDate = formatter.parse(j.getStartTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			if (journeyDate.before(tempEndDate) && journeyDate.after(tempStartDate)) {
+				validJourneys.add(j);
+			}
+
+		}
+
+		HashMap<String, Integer> passengerMap = new HashMap<String, Integer>();
+
+		for (Journey j : validJourneys) {
+			String passengers = j.getPassenger();
+			if(passengers==null) continue;
+			List<String> passengerList = Arrays.asList(passengers.split("\\s*_\\s*"));
+			for (String s : passengerList) {
+				if (passengerMap.containsKey(s)) {
+					passengerMap.put(s, passengerMap.get(s) + 1);
+				} else {
+					passengerMap.put(s, 1);
+				}
+			}
+
+		}
+		Map<String, Integer> map = sortByValue(passengerMap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+
+	public String rankStops() {
+		String stopsList = getAllStops();
+		String returnlist = null;
+		List<String> list = Arrays.asList(stopsList.split("\\s*_\\s*"));
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		for (String s : list) {
+			Stop stop = getStopbyName(s);
+			if (stop == null) {
+				return "No stops found";
+			}
+			hmap.put(s, stop.getUsage());
+		}
+		Map<String, Integer> map = sortByValue(hmap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "   " + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+
+	public String rankPassengers() {
+		String passengerList = getAllPassengers();
+		if (passengerList == null) {
+			return null;
+		}
+		String returnlist = null;
+		List<String> list = Arrays.asList(passengerList.split("\\s*_\\s*"));
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		for (String p : list) {
+			Passenger passenger = getPassengerbyName(p);
+			hmap.put(p, passenger.getNumberOfJourneys());
+		}
+		Map<String, Integer> map = sortByValue(hmap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "   " + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+}

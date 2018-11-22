@@ -24,7 +24,9 @@ public class Driver {
 	private Status status;
 	private Rating rating;
     private int numberOfJourneys;
-    
+	private String journey;
+	
+	
 	public void setName(String value) {
 		this.name = value;
 	}
@@ -45,15 +47,25 @@ public class Driver {
 		return this.id;
 	}
 
-	private Set<Journey> journey;
+	//private Set<Journey> journey;
 
-	@ManyToMany
-	@Column(name = "driverJourney")
-	public Set<Journey> getJourney() {
+
+	//@ManyToMany
+	@Column(name = "driverjourney")
+	public String getJourney() {
 		return this.journey;
 	}
+	
+//	public Set<Journey> getJourney() {
+//		return this.journey;
+//	}
 
-	public void setJourney(Set<Journey> journeys) {
+//	public void setJourney(Set<Journey> journeys) {
+//		this.journey = journeys;
+//	}
+//	
+	
+	public void setJourney(String journeys) {
 		this.journey = journeys;
 	}
 
@@ -87,6 +99,8 @@ public class Driver {
 		return "Driver [id=" + id + ", driverName #" + name + ",status=" + status + ",rating="
 				+ rating + " ]";
 	}
+	
+	
 	@Column(name = "numberofjourneys")
 	public int getNumberOfJourneys() {
 		return numberOfJourneys;

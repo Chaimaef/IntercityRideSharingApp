@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -23,6 +25,8 @@ public class Journey {
 	private String vehicleType;
 	private String availableSeating;
 	private String price;
+	private String journeyPassengers;
+	//public static  HashMap<String, Integer> stopMap = new LinkedHashMap<String, Integer>();
 	//private String journeyStatus;
 
 	@Id
@@ -129,5 +133,13 @@ public class Journey {
 				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price=" + price
 				+ ", drivers=" + driver + ", status=" + status + ", passenger=" + passenger + "]";
 	}
+	
+//	@Column(name = "journey_passengers", updatable=true)
+//	public String getJourneyPassengers() {
+//		return journeyPassengers;
+//	}
+//	public void setJourneyPassengers(String journeyPassengers) {
+//		this.journeyPassengers = journeyPassengers;
+//	}
 
 }

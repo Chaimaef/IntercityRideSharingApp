@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Rating;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status;
 import ca.mcgill.ecse321.intercityRideSharingSystem.Repository.intercityRideSharingSystemRepository;
@@ -38,10 +37,10 @@ public class intercityRideSharingSystemController {
 	// Method to get a user using all the available fields, it uses a method in
 	// repository which communicates with the database
 	@RequestMapping("/user/{name}/{role}/{status}/{rating}")
-	public Integer createUser(@PathVariable("name") String name, @PathVariable("role") String role,
+	public String createUser(@PathVariable("name") String name, @PathVariable("role") String role,
 			@PathVariable("status") Status status, @PathVariable("rating") Rating rating) {
-		User u = repository.createUser(name, role, status, rating);
-		return u.getId();
+	//	User u = repository.createUser(name, role, status, rating);
+		return repository.createUser(name, role, status, rating);
 	}
 
 	// Method to get a user using the name field only, it uses a method in
@@ -66,7 +65,15 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
-
+	@RequestMapping("/drivergTemp/{name}")
+	public String queryDriverTemp(@PathVariable("name") String name) {
+		String user = repository.getAllDrivers();
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
+	
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {
 		User u = repository.getUserbyName(name);
@@ -87,8 +94,8 @@ public class intercityRideSharingSystemController {
 		if (time.equals("now")) {
 			time = strDate;
 		}
-		Journey journey = repository.createJourney(time, stops, price, vehicle, availableSeating, driver);
-		return ("Created journey " + journey.toString());
+		String journey = repository.createJourney(time, stops, price, vehicle, availableSeating, driver);
+		return ("Created journey " + journey);
 	}
 
 	// Uses the driver's name to return the journeys with a matching driver
@@ -154,6 +161,18 @@ public class intercityRideSharingSystemController {
 		}
 		return journeyFound;
 	}
+	
+	
+	@RequestMapping("/Id/{Id}")
+	public String queryJourneyWithId(@PathVariable("Id") String Id) {
+		int IdNumber= Integer.parseInt(Id);
+		Journey journeyFound = repository.getJourneyWithId(IdNumber);
+		if (journeyFound == null) {
+			return "Not Found";
+		}
+		return journeyFound.toString();
+	}
+	
 
 	// Returns the journeys with the same vehicle type as the inputed one
 	@RequestMapping("/carType/{carType}")
@@ -166,12 +185,51 @@ public class intercityRideSharingSystemController {
 	}
 
 	@RequestMapping("/rankDrivers")
-	public Map<Integer, String> rankDrivers() {
-		Map<Integer, String> rankedDrivers = repository.rankDrivers();
+	public String rankDrivers() {
+		String rankedDrivers = repository.rankDrivers();
 		if (rankedDrivers == null) {
 			return null;
 		}
 		return rankedDrivers;
+	}
+	
+	@RequestMapping("/rankPassengersDate/{startDate}/{endDate}")
+	public String rankPassengersWithDate(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
+		String rankedDrivers = repository.rankPassengersWithDate(startDate, endDate);
+		if (rankedDrivers == null) {
+			return null;
+		}
+		return rankedDrivers;
+	}
+	
+	@RequestMapping("/rankDriversDate/{startDate}/{endDate}")
+	public String rankDriversWithDate(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
+		String rankedDrivers = repository.rankDriversWithDate(startDate, endDate);
+		if (rankedDrivers == null) {
+			return null;
+		}
+		return rankedDrivers;
+	}
+	
+	
+	
+	
+	@RequestMapping("/rankPassengers")
+	public String rankPassengers() {
+		String rankedPassengers = repository.rankPassengers();
+		if (rankedPassengers == null) {
+			return "There are currently no passengers";
+		}
+		return rankedPassengers;
+	}
+	
+	@RequestMapping("/rankStops")
+	public String rankStops() {
+		String rankedStops = repository.rankStops();
+		if (rankedStops == null) {
+			return "There are currently no stops";
+		}
+		return rankedStops;
 	}
 	
 	// Filters the available journeys based on the entered data by the user
