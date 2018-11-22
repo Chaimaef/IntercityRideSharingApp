@@ -142,4 +142,8 @@ public class Journey {
 //		this.journeyPassengers = journeyPassengers;
 //	}
 
+	public String stopsToString() {
+		return "Journey [id=" + journeyId + ", stops=" + stop + ", associated price=" + price +  "]";
+	}
+
 }

@@ -65,15 +65,55 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
-	@RequestMapping("/drivergTemp/{name}")
-	public String queryDriverTemp(@PathVariable("name") String name) {
-		String user = repository.getAllDrivers();
+	@RequestMapping("/driverg/")
+	public String queryAllActiveDriver() {
+		String user = repository.getAllActiveDriver();
+
 		if (user == null) {
 			return "Not Found";
 		}
 		return user;
 	}
-	
+
+
+	@RequestMapping("/passengerg/")
+	public String queryAllActivePassenger() {
+		String user = repository.getAllActivePassenger();
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
+
+
+	@RequestMapping("/journeysg/")
+	public String queryAllActiveJourney() {
+		String journey = repository.getAllActiveJourney();
+		if (journey == null) {
+			return "Not Found";
+		}
+		return journey;
+	}
+
+	@RequestMapping("/journeysg/{stop}")
+	public String queryActiveJourney(@PathVariable("stop") String stop) {
+		String journey = repository.getActiveJourney(stop);
+		if (journey == null) {
+			return "Not Found";
+		}
+		return journey;
+	}
+
+	@RequestMapping("/passengerg/{name}")
+	public String queryActivePassenger(@PathVariable("name") String name) {
+		String user = repository.getActivePassenger(name);
+		if (user == null) {
+			return "Not Found";
+		}
+		return user;
+	}
+
+
 	@RequestMapping(value = "/u", method = { RequestMethod.POST, RequestMethod.GET })
 	public String queryUserName(@RequestParam(value = "name", defaultValue = "-1000") String name) {
 		User u = repository.getUserbyName(name);

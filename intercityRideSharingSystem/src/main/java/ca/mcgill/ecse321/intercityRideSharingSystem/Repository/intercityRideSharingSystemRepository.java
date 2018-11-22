@@ -146,6 +146,66 @@ public class intercityRideSharingSystemRepository {
 		return driverlist;
 	}
 
+	@Transactional
+	public String getAllActiveDriver() {
+		List<Driver> drivers = queryAllDrivers();
+		String driverlist = "";
+		for (Driver d : drivers) {
+			if(d.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+				driverlist += d.driverToString();
+			}
+		}
+		return driverlist;
+	}
+
+	@Transactional
+	public String getActivePassenger(String name) {
+		List<Passenger> passengers = getPassengerWithName(name);
+		String passengerlist = "";
+		 for (Passenger p : passengers) {
+			if(p.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+		 		passengerlist += p.passengerToString();
+		 	}
+		 }
+		return passengerlist;
+	}
+
+	@Transactional
+	public String getAllActivePassenger() {
+		List<Passenger> passengers = queryAllPassengers();
+		String passengerlist = "";
+		 for (Passenger p : passengers) {
+			if(p.getStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.User.Status.active){
+		 		passengerlist += p.passengerToString();
+		 	}
+		 }
+		return passengerlist;
+	}
+
+	@Transactional
+	public String getAllActiveJourney() {
+		List<Journey> journeys = queryAllJourneys();
+		String journeylist = "";
+		 for (Journey p : journeys) {
+			if(p.getJourneyStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active){
+		 		journeylist += p.stopsToString();
+		 	}
+		 }
+		return journeylist;
+	}
+
+	@Transactional
+	public String getActiveJourney(String stop) {
+		List<Journey> journeys = queryJourneysWithStop(stop);
+		String journeylist = "";
+		 for (Journey p : journeys) {
+			if(p.getJourneyStatus() == ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active){
+		 		journeylist += p.stopsToString();
+		 	}
+		 }
+		return journeylist;
+	}
+
 	// Method used to convert the list received from the method finUserWithName to a
 	// long string
 	@Transactional
@@ -265,9 +325,20 @@ public class intercityRideSharingSystemRepository {
 		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c").getResultList();
 	}
 
+
+
+
+
 	@SuppressWarnings("unchecked")
 	public List<Journey> queryAllJourneys() {
-		return (List<Journey>) entityManager.createQuery("SELECT c FROM Journey c").getResultList();
+		return (List<Journey>) entityManager.createQuery("SELECT c FROM Journey c")
+				.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Journey> queryJourneysWithStop(String stop) {
+		return (List<Journey>) entityManager.createQuery("SELECT c FROM Journey c WHERE c.stop LIKE CONCAT('%', :stops, '%')")
+				.setParameter("stops", stop).getResultList();
 	}
 
 	// Creates a query to retrieve data from the database: Returns a user with the
@@ -289,6 +360,7 @@ public class intercityRideSharingSystemRepository {
 		return (List<Passenger>) entityManager
 				.createQuery("SELECT c FROM Passenger c WHERE strpos(c.name, :passengerName) > 0")
 				.setParameter("passengerName", name).getResultList();
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -310,6 +382,14 @@ public class intercityRideSharingSystemRepository {
 				.createQuery("SELECT c FROM Driver c WHERE c.name LIKE CONCAT('%', :userName, '%')")
 				.setParameter("userName", name).getResultList();
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<Passenger> getPassengerWithName(String name) {
+		return (List<Passenger>) entityManager.createQuery("SELECT c FROM Passenger c WHERE c.name LIKE CONCAT('%', :passengername, '%')")
+				.setParameter("passengername", name).getResultList();
+	}
+
 
 	// Creates a query to retrieve data from the database: Returns the journeys
 	// which contain the wanted stop

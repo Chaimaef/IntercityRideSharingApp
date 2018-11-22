@@ -85,7 +85,10 @@ public class Passenger {
 	public int getNumberOfJourneys() {
 		return numberOfJourneys;
 	}
-
+	public String passengerToString() {
+		return "Passenger [id=" + passengerId + ", passengerName #" + passengerName + ",status=" + status + ",rating="
+				+ rating + " ]";
+	}
 	public void setNumberOfJourneys(int numberOfJourneys) {
 		this.numberOfJourneys = numberOfJourneys;
 	}
