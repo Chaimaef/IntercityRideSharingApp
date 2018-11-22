@@ -823,12 +823,14 @@ public class intercityRideSharingSystemRepository {
 			tempStartDate = formatter.parse(startDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
 		}
 		Date tempEndDate = null;
 		try {
 			tempEndDate = formatter.parse(endDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
 		}
 		String journeyString = getAllJourneys();
 		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
