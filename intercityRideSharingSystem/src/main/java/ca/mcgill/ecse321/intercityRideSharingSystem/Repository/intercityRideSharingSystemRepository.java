@@ -919,7 +919,7 @@ public class intercityRideSharingSystemRepository {
 			if (returnlist == null) {
 				returnlist = entry.getKey() + " : " + entry.getValue();
 			} else {
-				returnlist += "   " + entry.getKey() + " : " + entry.getValue();
+				returnlist += "]" + entry.getKey() + " : " + entry.getValue();
 			}
 		}
 		return returnlist;
