@@ -800,7 +800,7 @@ public class intercityRideSharingSystemRepository {
 			if (returnlist == null) {
 				returnlist = entry.getKey() + " : " + entry.getValue();
 			} else {
-				returnlist += "_" + entry.getKey() + " : " + entry.getValue();
+				returnlist += "  " + entry.getKey() + " : " + entry.getValue();
 			}
 		}
 		return returnlist;
@@ -871,7 +871,7 @@ public class intercityRideSharingSystemRepository {
 			if (returnlist == null) {
 				returnlist = entry.getKey() + " : " + entry.getValue();
 			} else {
-				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
+				returnlist += "_" + entry.getKey() + " : " + entry.getValue();
 			}
 		}
 		return returnlist;
