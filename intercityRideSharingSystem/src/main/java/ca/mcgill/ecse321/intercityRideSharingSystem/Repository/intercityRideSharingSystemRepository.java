@@ -253,12 +253,12 @@ public class intercityRideSharingSystemRepository {
 	// received from the controller
 	@Transactional
 	public String createJourney(String startTime, String stops, String price, String vehicleType,
-			String avilableSeating, String driver) {
-		Journey journey = new Journey();
+			String avilableSeating, String driver) {	
 		Driver d = getDriverbyName(driver);
 		if (d == null) {
 			return "Driver doesn't exist";
 		}
+		Journey journey = new Journey();
 		d.setNumberOfJourneys(d.getNumberOfJourneys() + 1);
 		String finalPrice = "0_" + price;
 		List<String> list = Arrays.asList(stops.split("\\s*_\\s*"));
@@ -759,14 +759,14 @@ public class intercityRideSharingSystemRepository {
 			tempStartDate = formatter.parse(startDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
-			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
 		}
 		Date tempEndDate = null;
 		try {
 			tempEndDate = formatter.parse(endDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
-			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
 		}
 		String journeyString = getAllJourneys();
 		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
@@ -825,14 +825,14 @@ public class intercityRideSharingSystemRepository {
 			tempStartDate = formatter.parse(startDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
-			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
 		}
 		Date tempEndDate = null;
 		try {
 			tempEndDate = formatter.parse(endDate);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
-			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format";
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
 		}
 		String journeyString = getAllJourneys();
 		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
@@ -881,29 +881,7 @@ public class intercityRideSharingSystemRepository {
 		return returnlist;
 	}
 
-	public String rankStops() {
-		String stopsList = getAllStops();
-		String returnlist = null;
-		List<String> list = Arrays.asList(stopsList.split("\\s*_\\s*"));
-		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-		for (String s : list) {
-			Stop stop = getStopbyName(s);
-			if (stop == null) {
-				return "No stops found";
-			}
-			hmap.put(s, stop.getUsage());
-		}
-		Map<String, Integer> map = sortByValue(hmap);
 
-		for (Entry<String, Integer> entry : map.entrySet()) {
-			if (returnlist == null) {
-				returnlist = entry.getKey() + " : " + entry.getValue();
-			} else {
-				returnlist += "   " + entry.getKey() + " : " + entry.getValue();
-			}
-		}
-		return returnlist;
-	}
 
 	public String rankPassengers() {
 		String passengerList = getAllPassengers();
@@ -924,6 +902,127 @@ public class intercityRideSharingSystemRepository {
 				returnlist = entry.getKey() + " : " + entry.getValue();
 			} else {
 				returnlist += "   " + entry.getKey() + " : " + entry.getValue();
+			}
+		}
+		return returnlist;
+	}
+	
+	
+	public String rankStops(String startDate, String endDate) {
+		
+		if (startDate == null) {
+			startDate = "01-01-1900-09:00:00";
+		}
+
+		if (endDate == null) {
+			endDate = "01-01-2100-09:00:00";
+		}
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy-HH:mm:ss");
+		String returnlist = null;
+		Date tempStartDate = null;
+		try {
+			tempStartDate = formatter.parse(startDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00 ";
+		}
+		Date tempEndDate = null;
+		try {
+			tempEndDate = formatter.parse(endDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
+		}
+		String journeyString = getAllJourneys();
+		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
+		List<String> validJourneys = new ArrayList<String>();
+
+		for (String s : journeyList) {
+			int Id = Integer.parseInt(s);
+			Journey j = getJourneyWithId(Id);
+			Date journeyDate = null;
+			try {
+				journeyDate = formatter.parse(j.getStartTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			if (journeyDate.before(tempEndDate) && journeyDate.after(tempStartDate)) {
+				validJourneys.add(s);
+			}
+
+		}
+				
+		//String journeysList = getAllJourneys();
+		//String returnlist = null;
+		//List<String> list = Arrays.asList(journeysList.split("\\s*_\\s*"));
+		HashMap<String, Integer> stopMap = new HashMap<String, Integer>();
+		String temp;
+		
+		for (String s : validJourneys) {
+			Journey journey = getJourneyWithId(Integer.parseInt(s));
+			String stopString= journey.getStop();
+			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
+			for(int i=0; i<stopList.size();i++)	{
+				temp= stopList.get(i);
+				if (stopMap.containsKey(temp)) {
+					stopMap.put(temp, stopMap.get(temp) + 1);
+				} else {
+					stopMap.put(temp, 1);
+				}		
+			}			
+		}
+		
+		for (String s : validJourneys) {
+			Journey journey = getJourneyWithId(Integer.parseInt(s));
+			String stopString= journey.getStop();
+			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
+			for(int i=0; i<stopList.size()-1;i++)	{
+				temp= stopList.get(i)+"_"+stopList.get(i+1);
+				if (stopMap.containsKey(temp)) {
+					stopMap.put(temp, stopMap.get(temp) + 1);
+				} else {
+					stopMap.put(temp, 1);
+				}		
+			}			
+		}
+		
+		for (String s : validJourneys) {
+			Journey journey = getJourneyWithId(Integer.parseInt(s));
+			String stopString= journey.getStop();
+			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
+			for(int i=0; i<stopList.size()-2;i++){
+				temp= stopList.get(i)+"_"+stopList.get(i+1)+"_"+ stopList.get(i+2);
+				if (stopMap.containsKey(temp)) {
+					stopMap.put(temp, stopMap.get(temp) + 1);
+				} else {
+					stopMap.put(temp, 1);
+				}		
+			}			
+		}
+		
+		for (String s : validJourneys) {
+			Journey journey = getJourneyWithId(Integer.parseInt(s));
+			String stopString= journey.getStop();
+			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
+			for(int i=0; i<stopList.size()-3;i++)	{
+				temp= stopList.get(i)+"_"+stopList.get(i+1)+"_"+ stopList.get(i+2)+"_"+ stopList.get(i+3);
+				if (stopMap.containsKey(temp)) {
+					stopMap.put(temp, stopMap.get(temp) + 1);
+				} else {
+					stopMap.put(temp, 1);
+				}		
+			}			
+		}
+				
+		Map<String, Integer> map = sortByValue(stopMap);
+
+		for (Entry<String, Integer> entry : map.entrySet()) {
+			if (returnlist == null) {
+				returnlist = entry.getKey() + " : " + entry.getValue();
+			} else {
+				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
 			}
 		}
 		return returnlist;

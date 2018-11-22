@@ -263,9 +263,9 @@ public class intercityRideSharingSystemController {
 		return rankedPassengers;
 	}
 	
-	@RequestMapping("/rankStops")
-	public String rankStops() {
-		String rankedStops = repository.rankStops();
+	@RequestMapping("/rankStops/{startDate}/{endDate}")
+	public String rankStops(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
+		String rankedStops = repository.rankStops(startDate, endDate);
 		if (rankedStops == null) {
 			return "There are currently no stops";
 		}
