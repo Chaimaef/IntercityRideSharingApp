@@ -34,8 +34,8 @@ public class intercityRideSharingSystemController {
 		return "Hello world!";
 	}
 
-	// Method to get a user using all the available fields, it uses a method in
-	// repository which communicates with the database
+	/** Method to get a user using all the available fields, it uses a method in
+	 repository which communicates with the database */
 	@RequestMapping("/user/{name}/{role}/{status}/{rating}")
 	public String createUser(@PathVariable("name") String name, @PathVariable("role") String role,
 			@PathVariable("status") Status status, @PathVariable("rating") Rating rating) {
@@ -43,8 +43,8 @@ public class intercityRideSharingSystemController {
 		return repository.createUser(name, role, status, rating);
 	}
 
-	// Method to get a user using the name field only, it uses a method in
-	// repository which communicates with the database
+	/** Method to get a user using the name field only, it uses a method in
+	 repository which communicates with the database */
 	@RequestMapping("/userg/{name}")
 	public String queryUser(@PathVariable("name") String name) {
 		String user = repository.getUser(name);
@@ -54,8 +54,8 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
-	// Method to get a driver using the name field only, it uses a method in
-	// repository which communicates with the database
+	/** Method to get a driver using the name field only, it uses a method in
+	 repository which communicates with the database*/
 	@RequestMapping("/driverg/{name}")
 	public String queryDriver(@PathVariable("name") String name) {
 		String user = repository.getActiveDriver(name);
@@ -64,7 +64,8 @@ public class intercityRideSharingSystemController {
 		}
 		return user;
 	}
-
+	/** method to get all the active drivers
+	 using a method from repository tha communicates with the database*/
 	@RequestMapping("/driverg/")
 	public String queryAllActiveDriver() {
 		String user = repository.getAllActiveDriver();
@@ -75,6 +76,8 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
+	/** method to get all the active passengers
+	using a method from repository tha communicates with the database */
 
 	@RequestMapping("/passengerg/")
 	public String queryAllActivePassenger() {
@@ -85,7 +88,8 @@ public class intercityRideSharingSystemController {
 		return user;
 	}
 
-
+	/** method to get all the active journeys 
+	using a method from repository tha communicates with the database*/
 	@RequestMapping("/journeysg/")
 	public String queryAllActiveJourney() {
 		String journey = repository.getAllActiveJourney();
@@ -94,7 +98,8 @@ public class intercityRideSharingSystemController {
 		}
 		return journey;
 	}
-
+	/** method to get a particular active journeys using the name field only
+	using a method from repository tha communicates with the database*/
 	@RequestMapping("/journeysg/{stop}")
 	public String queryActiveJourney(@PathVariable("stop") String stop) {
 		String journey = repository.getActiveJourney(stop);
@@ -104,6 +109,8 @@ public class intercityRideSharingSystemController {
 		return journey;
 	}
 
+	/** method to get a particular active passenger using the name field only
+	using a method from repository tha communicates with the database*/
 	@RequestMapping("/passengerg/{name}")
 	public String queryActivePassenger(@PathVariable("name") String name) {
 		String user = repository.getActivePassenger(name);
@@ -123,10 +130,10 @@ public class intercityRideSharingSystemController {
 		return u.getName();
 	}
 
-	// Method to create a journey,(user has to fill in all the fields), it calls a
-	// method in repository
-	// which communicates with the database and inserts the data in the Journeyt04
-	// table;
+	/**Method to create a journey,(user has to fill in all the fields), it calls a
+	method in repository
+	which communicates with the database and inserts the data in the Journeyt04
+	table*/
 	@RequestMapping("/createj/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
 	public String createJourney(@PathVariable("time") String time, @PathVariable("stops") String stops,
 			@PathVariable("price") String price, @PathVariable("vehicle") String vehicle,
@@ -138,7 +145,7 @@ public class intercityRideSharingSystemController {
 		return ("Created journey " + journey);
 	}
 
-	// Uses the driver's name to return the journeys with a matching driver
+	/** Uses the driver's name to return the journeys with a matching driver*/
 	@RequestMapping("/journeyd/{driver}")
 	public String queryJourney(@PathVariable("driver") String driver) {
 		String journeyFound = repository.getJourneyWithDriver(driver);
@@ -148,7 +155,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
-	// Uses an id number, to return the journey with the corresponding id number
+	/** Uses an id number, to return the journey with the corresponding id number*/
 	@RequestMapping("/journeyc/{id}")
 	public String closeJourney(@PathVariable("id") String id) {
 		String journeyFound = repository.closeJourneyWithID(id);
@@ -158,7 +165,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
-	// Method to add a passenger to a journey
+	/** Method to add a passenger to a journey*/
 	@RequestMapping("/journeyp/{id}/{passenger}")
 	public String joinJourney(@PathVariable("id") String id, @PathVariable("passenger") String passenger) {
 		String journeyFound = repository.joinJourneyWithID(id, passenger);
@@ -168,8 +175,8 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
-	// Modifies a journey based on the new data entered by the user (all fields must
-	// be filled)
+	/**Modifies a journey based on the new data entered by the user (all fields must
+	be filled)*/
 	@RequestMapping("/journeyupdate/{id}/{time}/{stops}/{price}/{vehicle}/{availableSeating}/{driver}")
 	public String updateJourneywithID(@PathVariable("id") String id, @PathVariable("time") String time,
 			@PathVariable("stops") String stops, @PathVariable("price") String price,
@@ -182,7 +189,7 @@ public class intercityRideSharingSystemController {
 		return "Journey being updated" + journeyFound;
 	}
 
-	// Returns a journey with the corresponding start and destination
+	/** Returns a journey with the corresponding start and destination*/
 	@RequestMapping("/journeyg/{start}/{destination}")
 	public String queryJourney(@PathVariable("start") String start, @PathVariable("destination") String destination) {
 		String journeyFound = repository.getJourney(start, destination);
@@ -192,7 +199,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
-	// Returns the journeys with available seating greater than the inputed seating
+	/** Returns the journeys with available seating greater than the inputed seating*/
 	@RequestMapping("/availableSeating/{availableSeating}")
 	public String queryJourneyWithAvailableSeating(@PathVariable("availableSeating") String availableSeating) {
 		String journeyFound = repository.getJourneyWithAvailableSeating(availableSeating);
@@ -202,7 +209,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 	
-	
+	/** Returns the journey with the same ID that is inserted as an input Id*/
 	@RequestMapping("/Id/{Id}")
 	public String queryJourneyWithId(@PathVariable("Id") String Id) {
 		int IdNumber= Integer.parseInt(Id);
@@ -214,7 +221,7 @@ public class intercityRideSharingSystemController {
 	}
 	
 
-	// Returns the journeys with the same vehicle type as the inputed one
+	/** Returns the journeys with the same vehicle type as the inputed one*/
 	@RequestMapping("/carType/{carType}")
 	public String queryJourneyWithCarType(@PathVariable("carType") String carType) {
 		String journeyFound = repository.getJourneyWithCarType(carType);
@@ -224,6 +231,7 @@ public class intercityRideSharingSystemController {
 		return journeyFound;
 	}
 
+	/** Returns the list of the drivers that made journeys, they are listed in descending order in terms of ranks*/
 	@RequestMapping("/rankDrivers")
 	public String rankDrivers() {
 		String rankedDrivers = repository.rankDrivers();
@@ -232,7 +240,9 @@ public class intercityRideSharingSystemController {
 		}
 		return rankedDrivers;
 	}
-	
+
+	/** Returns the list of passengers that made the journey 
+	inbetween the entered start and end date name field in descending order of ranks*/
 	@RequestMapping("/rankPassengersDate/{startDate}/{endDate}")
 	public String rankPassengersWithDate(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
 		String rankedDrivers = repository.rankPassengersWithDate(startDate, endDate);
@@ -242,6 +252,8 @@ public class intercityRideSharingSystemController {
 		return rankedDrivers;
 	}
 	
+	/** Method that Returns the list of drivers who made journeys
+	inbetween the entered start and end date name field in descending order of ranks*/
 	@RequestMapping("/rankDriversDate/{startDate}/{endDate}")
 	public String rankDriversWithDate(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
 		String rankedDrivers = repository.rankDriversWithDate(startDate, endDate);
@@ -253,7 +265,7 @@ public class intercityRideSharingSystemController {
 	
 	
 	
-	
+	/** Method that Returns the list of passengers who made journeys in descending order of ranks*/
 	@RequestMapping("/rankPassengers")
 	public String rankPassengers() {
 		String rankedPassengers = repository.rankPassengers();
@@ -262,7 +274,9 @@ public class intercityRideSharingSystemController {
 		}
 		return rankedPassengers;
 	}
-	
+
+	/** Method that Returns the list of stops 
+	inbetween the entered start and end date name field in descending order of ranks*/
 	@RequestMapping("/rankStops/{startDate}/{endDate}")
 	public String rankStops(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
 		String rankedStops = repository.rankStops(startDate, endDate);
@@ -272,7 +286,7 @@ public class intercityRideSharingSystemController {
 		return rankedStops;
 	}
 	
-	// Filters the available journeys based on the entered data by the user
+	/** Filters the available journeys based on the entered data by the user*/
 	@RequestMapping("/journeysort/{start}/{destination}/{carType}/{price}/{seating}/{date}")
 	public String sortJourney(@PathVariable("start") String start, @PathVariable("destination") String destination,
 			@PathVariable("carType") String carType, @PathVariable("price") String price,
