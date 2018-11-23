@@ -1048,19 +1048,19 @@ public class intercityRideSharingSystemRepository {
 		HashMap<String, Integer> stopMap = new HashMap<String, Integer>();
 		String temp;
 
-		for (String s : validJourneys) {
-			Journey journey = getJourneyWithId(Integer.parseInt(s));
-			String stopString = journey.getStop();
-			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
-			for (int i = 0; i < stopList.size(); i++) {
-				temp = stopList.get(i);
-				if (stopMap.containsKey(temp)) {
-					stopMap.put(temp, stopMap.get(temp) + 1);
-				} else {
-					stopMap.put(temp, 1);
-				}
-			}
-		}
+//		for (String s : validJourneys) {
+//			Journey journey = getJourneyWithId(Integer.parseInt(s));
+//			String stopString = journey.getStop();
+//			List<String> stopList = Arrays.asList(stopString.split("\\s*_\\s*"));
+//			for (int i = 0; i < stopList.size(); i++) {
+//				temp = stopList.get(i);
+//				if (stopMap.containsKey(temp)) {
+//					stopMap.put(temp, stopMap.get(temp) + 1);
+//				} else {
+//					stopMap.put(temp, 1);
+//				}
+//			}
+//		}
 
 		for (String s : validJourneys) {
 			Journey journey = getJourneyWithId(Integer.parseInt(s));
