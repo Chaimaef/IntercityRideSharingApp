@@ -438,6 +438,7 @@ public class intercityRideSharingSystemRepository {
 		String journeylist = "";
 		Passenger p = getPassengerbyName(passengers);
 		p.setNumberOfJourneys(p.getNumberOfJourneys() + 1);
+		p.setStatus(Status.active);
 		for (Journey j : journeys) {
 			if (j.getPassenger() == null) {
 				j.setPassenger(passengers);
@@ -1022,7 +1023,7 @@ public class intercityRideSharingSystemRepository {
 			if (returnlist == null) {
 				returnlist = entry.getKey() + " : " + entry.getValue();
 			} else {
-				returnlist += "<br>" + entry.getKey() + " : " + entry.getValue();
+				returnlist += "|" + entry.getKey() + " : " + entry.getValue();
 			}
 		}
 		return returnlist;
