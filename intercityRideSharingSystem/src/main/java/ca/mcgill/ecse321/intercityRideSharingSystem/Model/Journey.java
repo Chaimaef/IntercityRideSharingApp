@@ -15,7 +15,6 @@ import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 @Table(name = "Journeyt04")
 public class Journey {
@@ -26,8 +25,9 @@ public class Journey {
 	private String availableSeating;
 	private String price;
 	private String journeyPassengers;
-	//public static  HashMap<String, Integer> stopMap = new LinkedHashMap<String, Integer>();
-	//private String journeyStatus;
+	// public static HashMap<String, Integer> stopMap = new LinkedHashMap<String,
+	// Integer>();
+	// private String journeyStatus;
 
 	@Id
 	@Column(name = "journeyId", updatable = false)
@@ -35,6 +35,7 @@ public class Journey {
 	public int getJourneyId() {
 		return journeyId;
 	}
+
 	public void setJourneyId(int journeyId) {
 		this.journeyId = journeyId;
 	}
@@ -42,9 +43,9 @@ public class Journey {
 	public void setStartTime(String value) {
 		this.startTime = value;
 	}
-		
+
 	public enum Status {
-		active,closed
+		active, closed
 	}
 
 	@Column(name = "journeyStartTime", updatable = true)
@@ -117,7 +118,7 @@ public class Journey {
 	public String getAvailableSeating() {
 		return this.availableSeating;
 	}
-	
+
 	@Column(name = "journey_status", updatable = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Status getJourneyStatus() {
@@ -133,17 +134,17 @@ public class Journey {
 				+ ", available Seating=" + availableSeating + ", stops=" + stop + ", associated price=" + price
 				+ ", drivers=" + driver + ", status=" + status + ", passenger=" + passenger + "]";
 	}
-	
-//	@Column(name = "journey_passengers", updatable=true)
-//	public String getJourneyPassengers() {
-//		return journeyPassengers;
-//	}
-//	public void setJourneyPassengers(String journeyPassengers) {
-//		this.journeyPassengers = journeyPassengers;
-//	}
+
+	// @Column(name = "journey_passengers", updatable=true)
+	// public String getJourneyPassengers() {
+	// return journeyPassengers;
+	// }
+	// public void setJourneyPassengers(String journeyPassengers) {
+	// this.journeyPassengers = journeyPassengers;
+	// }
 
 	public String stopsToString() {
-		return "Journey [id=" + journeyId + ", stops=" + stop + ", associated price=" + price +  "]";
+		return "Journey [id=" + journeyId + ", stops=" + stop + ", associated price=" + price + "]";
 	}
 
 }

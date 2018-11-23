@@ -769,25 +769,24 @@ public class intercityRideSharingSystemRepository {
 
 	}
 
-	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
-		/* Create a list from elements of HashMap */
-		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
-
-		/* Sort the list */
-		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-				return (o2.getValue()).compareTo(o1.getValue());
+	public static HashMap<String, Integer> sort(HashMap<String, Integer> hashMap) {
+		List<Map.Entry<String, Integer>> users = new LinkedList<Map.Entry<String, Integer>>(hashMap.entrySet());
+		Collections.sort(users, new Comparator<Map.Entry<String, Integer>>() {
+			public int compare(Map.Entry<String, Integer> firstS, Map.Entry<String, Integer> secondS) {
+				return (secondS.getValue()).compareTo(firstS.getValue());
 			}
 		});
-
-		/* put data from sorted list to hashmap */
-		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
-		for (Map.Entry<String, Integer> aa : list) {
-			temp.put(aa.getKey(), aa.getValue());
+		HashMap<String, Integer> finalMap = new LinkedHashMap<String, Integer>();
+		for (Map.Entry<String, Integer> user : users) {
+			finalMap.put(user.getKey(), user.getValue());
 		}
-		return temp;
+		return finalMap;
 	}
 
+	/**
+	 * Gets all the drivers from the databse and ranks them based on the number of
+	 * journeys they took part in, the drivers are displayed in descending order.
+	 */
 	public String rankDrivers() {
 		String driverList = getAllDrivers();
 		String returnlist = null;
@@ -797,7 +796,7 @@ public class intercityRideSharingSystemRepository {
 			Driver driver = getDriverbyName(d);
 			hmap.put(d, driver.getNumberOfJourneys());
 		}
-		Map<String, Integer> map = sortByValue(hmap);
+		Map<String, Integer> map = sort(hmap);
 
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			if (returnlist == null) {
@@ -809,6 +808,14 @@ public class intercityRideSharingSystemRepository {
 		return returnlist;
 	}
 
+	/**
+	 * Gets all the drivers from the databse and ranks them based on the number of
+	 * journeys they took part in, the drivers are displayed in descending order.
+	 * This methods only considers the journeys whithin the time frame passed.
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 */
 	public String rankDriversWithDate(String startDate, String endDate) {
 
 		if (startDate == null) {
@@ -863,7 +870,7 @@ public class intercityRideSharingSystemRepository {
 				driverMap.put(driverName, 1);
 			}
 		}
-		Map<String, Integer> map = sortByValue(driverMap);
+		Map<String, Integer> map = sort(driverMap);
 
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			if (returnlist == null) {
@@ -875,6 +882,15 @@ public class intercityRideSharingSystemRepository {
 		return returnlist;
 	}
 
+	/**
+	 * Gets all the passengers from the databse and ranks them based on the number
+	 * of journeys they took part in, the passengers are displayed in descending
+	 * order. This methods only considers the journeys whithin the time frame
+	 * passed.
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 */
 	public String rankPassengersWithDate(String startDate, String endDate) {
 
 		if (startDate == null) {
@@ -937,7 +953,7 @@ public class intercityRideSharingSystemRepository {
 			}
 
 		}
-		Map<String, Integer> map = sortByValue(passengerMap);
+		Map<String, Integer> map = sort(passengerMap);
 
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			if (returnlist == null) {
@@ -961,7 +977,7 @@ public class intercityRideSharingSystemRepository {
 			Passenger passenger = getPassengerbyName(p);
 			hmap.put(p, passenger.getNumberOfJourneys());
 		}
-		Map<String, Integer> map = sortByValue(hmap);
+		Map<String, Integer> map = sort(hmap);
 
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			if (returnlist == null) {
@@ -973,6 +989,16 @@ public class intercityRideSharingSystemRepository {
 		return returnlist;
 	}
 
+	/**
+	 * 
+	 * This method goes over the stops of each journey to find the occurence of the
+	 * used routes. It only considers the journey whithin the passed time frame.
+	 * After finding all the used routes and how often they have been used, it ranks
+	 * them in descending order.
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 */
 	public String rankStops(String startDate, String endDate) {
 
 		if (startDate == null) {
@@ -1079,7 +1105,7 @@ public class intercityRideSharingSystemRepository {
 			}
 		}
 
-		Map<String, Integer> map = sortByValue(stopMap);
+		Map<String, Integer> map = sort(stopMap);
 
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			if (returnlist == null) {
