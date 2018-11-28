@@ -352,6 +352,7 @@ public class intercityRideSharingSystemRepository {
 		journey.setVehicleType(vehicleType);
 		journey.setAvailableSeating(avilableSeating);
 		journey.setDriver(driver);
+		d.setStatus(Status.active);
 		if (d.getJourney() == null) {
 			d.setJourney("" + journey.getJourneyId());
 		} else {
@@ -360,6 +361,7 @@ public class intercityRideSharingSystemRepository {
 		ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status journeyStatus = ca.mcgill.ecse321.intercityRideSharingSystem.Model.Journey.Status.active;
 		journey.setJourneyStatus(journeyStatus);
 		entityManager.persist(journey);
+		entityManager.persist(d);
 		return journey.toString();
 	}
 
@@ -1025,6 +1027,14 @@ public class intercityRideSharingSystemRepository {
 			e1.printStackTrace();
 			return "The dates should respect the dd-MMM-yyyy-HH:mm:ss format like 01-Jan-2018-09:00:00";
 		}
+//		Date today = new Date();
+//		if(tempEndDate.after(today)) {
+//			return "End date should be prior to the current day";
+//		}
+//		if(tempStartDate.after(today)) {
+//			return "Start date should be prior to the current day";
+//		}
+		
 		String journeyString = getAllJourneys();
 		List<String> journeyList = Arrays.asList(journeyString.split("\\s*_\\s*"));
 		List<String> validJourneys = new ArrayList<String>();
